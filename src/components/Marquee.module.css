@@ -1,10 +1,40 @@
 .marqueeWrapper {
   width: 100%;
   overflow: hidden;
-  padding: 4rem 0;
+  padding: 5rem 0;
   display: flex;
   align-items: center;
   position: relative;
+}
+
+/* Fade effects on left and right */
+.marqueeWrapper::before,
+.marqueeWrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marqueeWrapper::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.marqueeWrapper::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 /* 
@@ -15,8 +45,8 @@
   display: flex;
   width: fit-content;
   gap: 2rem;
-  padding-left: 1rem;
-  animation: marqueeLoop 25s linear infinite;
+  padding: 0 1rem;
+  animation: marqueeLoop 22s linear infinite;
   will-change: transform;
 }
 
@@ -42,12 +72,7 @@
     transform: translateX(0);
   }
   100% {
-    /* Moves half the total width (the original 7 cards) */
-    transform: translateX(calc(-50% - 1rem));
+    /* Moves exactly half the track width (one full set of cards + their gaps) */
+    transform: translateX(-50%);
   }
-}
-
-/* Optional: Pause on hover to allow easier reading */
-.marqueeWrapper:hover .track {
-  animation-play-state: paused;
 }
