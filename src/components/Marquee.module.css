@@ -1,0 +1,53 @@
+.marqueeWrapper {
+  width: 100%;
+  overflow: hidden;
+  padding: 4rem 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* 
+ * We use two identical sets of cards in the track 
+ * and move the track to -50% to reset seamlessly.
+ */
+.track {
+  display: flex;
+  width: fit-content;
+  gap: 2rem;
+  padding-left: 1rem;
+  animation: marqueeLoop 25s linear infinite;
+  will-change: transform;
+}
+
+.card {
+  flex-shrink: 0;
+  width: 320px;
+  height: 120px;
+  background: #0d0f1f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes marqueeLoop {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Moves half the total width (the original 7 cards) */
+    transform: translateX(calc(-50% - 1rem));
+  }
+}
+
+/* Optional: Pause on hover to allow easier reading */
+.marqueeWrapper:hover .track {
+  animation-play-state: paused;
+}

@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+  padding: 8rem 2rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.card {
+  width: min(600px, 90vw);
+  height: 350px;
+  background: #0d0f1f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Initial state: off-screen right and hidden */
+  opacity: 0;
+  transform: translateX(150px);
+  will-change: transform, opacity;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  
+  /* Transition specs */
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateX(0);
+  /* Staggered delay: 0s, 0.2s, 0.4s */
+  transition-delay: calc(var(--index) * 0.2s);
+}
+
+.number {
+  font-size: 6rem;
+  font-weight: 800;
+  color: #fff;
+  opacity: 0.15;
+}
