@@ -1,0 +1,16 @@
+import styles from './Navbar.module.css'
+
+export default function Navbar() {
+  return (
+    <nav className={styles.navWrapper}>
+      <div className={styles.pill}>
+        <ul className={styles.links}>
+          <li><a href="#home">HOME</a></li>
+          <li><a href="#tools">TOOLS</a></li>
+          <li><a href="#history">HISTORY</a></li>
+          <li><a href="#about">ABOUT US</a></li>
+        </ul>
+      </div>
+    </nav>
+  )
+}

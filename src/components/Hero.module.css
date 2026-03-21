@@ -11,9 +11,10 @@
 .stage {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: min(78vw, 680px);
+  width: 96vw;
 }
 
 /* ── Phase 1: Line draws left → right ── */
@@ -45,22 +46,43 @@
 /* ── Phase 2: "Earth" morphs out of the line ── */
 .title {
   position: relative;
-  font-size: clamp(3.2rem, 9.5vw, 7rem);
-  font-weight: 200;
-  letter-spacing: 0.28em;
+  font-size: clamp(5rem, 20vw, 18rem);
+  font-weight: 900;
+  letter-spacing: 0.2em;
   color: #111;
   white-space: nowrap;
+  line-height: 1;
+  text-indent: 0.2em; /* Offsets the trailing letter-spacing for centering */
 
-  /*
-   * Clip to an invisible center strip — same vertical position as
-   * the line. The clip opens symmetrically top & bottom, as if the
-   * line's edges are peeling apart into letterforms.
-   */
   clip-path: inset(50% 0% 50% 0%);
   opacity: 0;
   will-change: clip-path, opacity;
-
   animation: textMorph 1.5s cubic-bezier(0.4, 0, 0.2, 1) 2.1s both;
+}
+
+.wordsRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 80vw; /* Match approximate visual width of EARTH title */
+  margin-top: 3rem;
+  opacity: 0;
+  animation: fadeIn 1s ease-out 3.2s both;
+}
+
+.wordItem {
+  flex: 1;
+  text-align: center;
+  font-size: clamp(0.7rem, 1vw, 1.1rem);
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes textMorph {
