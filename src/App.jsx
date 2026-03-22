@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Marquee from './components/Marquee'
@@ -8,6 +8,14 @@ import EntryOverlay from './components/EntryOverlay'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
+
+  useEffect(() => {
+    if (!hasEntered) {
+      document.body.classList.add('animations-paused')
+    } else {
+      document.body.classList.remove('animations-paused')
+    }
+  }, [hasEntered])
 
   return (
     <>

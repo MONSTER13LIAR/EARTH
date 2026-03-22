@@ -29,7 +29,7 @@ export default function WelcomeGuide() {
         setShow(true)
         speak()
       }
-    }, 5000)
+    }, 3000)
 
     // Close when TOOLS button is clicked
     const handleToolsClick = () => {
