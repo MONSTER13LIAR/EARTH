@@ -35,6 +35,17 @@ export default function App() {
         return (
           <>
             <Hero />
+            <div style={{
+              width: '100%',
+              height: '150px',
+              background: 'linear-gradient(to bottom, #f5f5f5 0%, #d0d0d0 20%, #808080 50%, #2a2a2a 80%, #000000 100%)',
+              pointerEvents: 'none',
+              margin: 0,
+              padding: 0,
+              display: 'block',
+              border: 'none',
+              outline: 'none',
+            }} />
             <Marquee />
             <Cards />
             {hasEntered && <WelcomeGuide />}

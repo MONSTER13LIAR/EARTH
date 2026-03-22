@@ -5,6 +5,21 @@
   display: flex;
   align-items: center;
   position: relative;
+  background: #000000;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+  padding-top: 20px;
+
+  /* Reveal initial state */
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+}
+
+.marqueeWrapper.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Fade effects on left and right */
@@ -23,8 +38,8 @@
   left: 0;
   background: linear-gradient(
     to right,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
@@ -32,8 +47,8 @@
   right: 0;
   background: linear-gradient(
     to left,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
@@ -54,17 +69,27 @@
   flex-shrink: 0;
   width: 320px;
   height: 120px;
-  background: #0d0f1f;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
+  background: #111111;
+  border: 1px solid #7C3AED;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.85);
+  color: #ffffff;
   font-weight: 600;
   font-size: 1.4rem;
   letter-spacing: 0.08em;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 0 12px #7C3AED,
+    0 0 24px rgba(124, 58, 237, 0.4);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 20px #7C3AED,
+    0 0 40px rgba(124, 58, 237, 0.6);
 }
 
 @keyframes marqueeLoop {

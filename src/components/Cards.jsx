@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import styles from './Cards.module.css'
 
 export default function Cards() {
@@ -51,10 +51,48 @@ export default function Cards() {
     },
   ]
 
+  const particles = useMemo(() => (
+    Array.from({ length: 60 }, (_, i) => {
+      const tiny = Math.random() < 0.5
+      return {
+        id: i,
+        bottom: Math.random() * 200,
+        left: Math.random() * 100,
+        size: tiny ? Math.random() * 1 + 1 : Math.random() * 2 + 3,
+        opacity: Math.random() * 0.6 + 0.2,
+        duration: Math.random() * 3 + 2,
+        delay: -(Math.random() * 4),
+        drift: (Math.random() * 60 - 30).toFixed(1),
+      }
+    })
+  ), [])
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    e.currentTarget.style.background = `radial-gradient(
+      circle 200px at ${x}px ${y}px,
+      rgba(124, 58, 237, 0.25) 0%,
+      rgba(124, 58, 237, 0.08) 40%,
+      transparent 70%
+    ), #0d0f1f`
+  }
+
+  const handleMouseLeave = (e) => {
+    e.currentTarget.style.background = ''
+  }
+
   return (
     <div className={styles.container} ref={containerRef}>
       {cards.map((card, i) => (
-        <div key={i} className={styles.card} style={{ '--index': i }}>
+        <div
+          key={i}
+          className={styles.card}
+          style={{ '--index': i }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+        >
           <span className={styles.stat}>{card.stat}</span>
           <span className={styles.title}>{card.title}</span>
           <p className={styles.description}>{card.description}</p>
@@ -68,6 +106,26 @@ export default function Cards() {
           </a>
         </div>
       ))}
+      <div className={styles.glowArea}>
+        <div className={styles.glowBg} />
+        {particles.map((p) => (
+          <div
+            key={p.id}
+            className={styles.particle}
+            style={{
+              position: 'absolute',
+              bottom: `${p.bottom}px`,
+              left: `${p.left}%`,
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              background: `rgba(124, 58, 237, ${p.opacity})`,
+              animation: `floatUp ${p.duration}s ease-in infinite`,
+              animationDelay: `${p.delay}s`,
+              '--drift': `${p.drift}px`,
+            }}
+          />
+        ))}
+      </div>
     </div>
   )
 }
