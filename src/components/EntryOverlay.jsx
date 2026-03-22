@@ -5,6 +5,13 @@ export default function EntryOverlay({ onEnter }) {
   const [isFading, setIsFading] = useState(false)
 
   const handleEnter = () => {
+    // Request microphone permission at entry
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        stream.getTracks().forEach(track => track.stop());
+      })
+      .catch(err => console.log(err));
+
     setIsFading(true)
     setTimeout(() => {
       onEnter()

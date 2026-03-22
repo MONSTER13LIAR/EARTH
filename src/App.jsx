@@ -6,6 +6,7 @@ import Cards from './components/Cards'
 import WelcomeGuide from './components/WelcomeGuide'
 import EntryOverlay from './components/EntryOverlay'
 import Tools from './components/Tools'
+import ChatbotBar from './components/ChatbotBar'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
@@ -33,6 +34,7 @@ export default function App() {
       ) : (
         <Tools />
       )}
+      <ChatbotBar />
     </>
   )
 }
