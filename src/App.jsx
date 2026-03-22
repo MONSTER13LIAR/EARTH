@@ -5,9 +5,11 @@ import Marquee from './components/Marquee'
 import Cards from './components/Cards'
 import WelcomeGuide from './components/WelcomeGuide'
 import EntryOverlay from './components/EntryOverlay'
+import Tools from './components/Tools'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
+  const [view, setView] = useState('home')
 
   useEffect(() => {
     if (!hasEntered) {
@@ -20,11 +22,17 @@ export default function App() {
   return (
     <>
       {!hasEntered && <EntryOverlay onEnter={() => setHasEntered(true)} />}
-      <Navbar />
-      <Hero />
-      <Marquee />
-      <Cards />
-      {hasEntered && <WelcomeGuide />}
+      <Navbar setView={setView} />
+      {view === 'home' ? (
+        <>
+          <Hero />
+          <Marquee />
+          <Cards />
+          {hasEntered && <WelcomeGuide />}
+        </>
+      ) : (
+        <Tools />
+      )}
     </>
   )
 }

@@ -1,0 +1,50 @@
+.pageContainer {
+  background-color: #ffffff;
+  min-height: 100vh;
+  width: 100%;
+  padding: 180px 24px 60px; /* Top padding keeps space for fixed navbar, 24px sides */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Increased gap */
+  width: 100%;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 600px; /* Max width 600px */
+  min-height: 160px; /* Increased height */
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cardName {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cardDesc {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #ffffff;
+  opacity: 0.9;
+}
