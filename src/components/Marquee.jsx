@@ -1,7 +1,7 @@
 import styles from './Marquee.module.css'
 
 export default function Marquee() {
-  const cards = Array.from({ length: 7 }, (_, i) => `Card ${i + 1}`)
+  const cards = Array.from({ length: 6 }, (_, i) => `Card ${i + 1}`)
   
   // Duplicate the list for a seamless loop
   const displayCards = [...cards, ...cards]
