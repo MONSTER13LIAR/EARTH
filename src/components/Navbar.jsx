@@ -6,7 +6,7 @@ export default function Navbar() {
       <div className={styles.pill}>
         <ul className={styles.links}>
           <li><a href="#home">HOME</a></li>
-          <li><a href="#tools">TOOLS</a></li>
+          <li><a href="#tools" id="nav-tools">TOOLS</a></li>
           <li><a href="#history">HISTORY</a></li>
           <li><a href="#about">ABOUT US</a></li>
         </ul>
