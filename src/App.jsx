@@ -6,6 +6,7 @@ import Cards from './components/Cards'
 import WelcomeGuide from './components/WelcomeGuide'
 import EntryOverlay from './components/EntryOverlay'
 import Tools from './components/Tools'
+import History from './components/History'
 import ChatbotBar from './components/ChatbotBar'
 
 export default function App() {
@@ -20,20 +21,30 @@ export default function App() {
     }
   }, [hasEntered])
 
+  const renderView = () => {
+    switch(view) {
+      case 'tools':
+        return <Tools />
+      case 'history':
+        return <History />
+      case 'home':
+      default:
+        return (
+          <>
+            <Hero />
+            <Marquee />
+            <Cards />
+            {hasEntered && <WelcomeGuide />}
+          </>
+        )
+    }
+  }
+
   return (
     <>
       {!hasEntered && <EntryOverlay onEnter={() => setHasEntered(true)} />}
       <Navbar setView={setView} />
-      {view === 'home' ? (
-        <>
-          <Hero />
-          <Marquee />
-          <Cards />
-          {hasEntered && <WelcomeGuide />}
-        </>
-      ) : (
-        <Tools />
-      )}
+      {renderView()}
       <ChatbotBar />
     </>
   )

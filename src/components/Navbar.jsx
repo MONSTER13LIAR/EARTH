@@ -12,7 +12,7 @@ export default function Navbar({ setView }) {
         <ul className={styles.links}>
           <li><a href="#home" onClick={(e) => handleClick(e, 'home')}>HOME</a></li>
           <li><a href="#tools" id="nav-tools" onClick={(e) => handleClick(e, 'tools')}>TOOLS</a></li>
-          <li><a href="#history">HISTORY</a></li>
+          <li><a href="#history" onClick={(e) => handleClick(e, 'history')}>HISTORY</a></li>
           <li><a href="#about">ABOUT US</a></li>
         </ul>
       </div>
