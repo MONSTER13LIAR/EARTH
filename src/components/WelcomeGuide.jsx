@@ -6,6 +6,8 @@ export default function WelcomeGuide() {
   const [position, setPosition] = useState({ left: 0, top: 0 })
 
   useEffect(() => {
+    // This effect runs only when the component is mounted 
+    // (which happens after EntryOverlay sets hasEntered to true)
     const speak = () => {
       const msg = new SpeechSynthesisUtterance()
       msg.text = "Welcome to EARTH. Your rural companion app. Please select your tool to get started."
@@ -15,30 +17,19 @@ export default function WelcomeGuide() {
       window.speechSynthesis.speak(msg)
     }
 
-    const startGuide = () => {
-      const timer = setTimeout(() => {
-        const toolsBtn = document.getElementById('nav-tools')
-        if (toolsBtn) {
-          const rect = toolsBtn.getBoundingClientRect()
-          setPosition({
-            left: rect.left + rect.width / 2,
-            top: rect.bottom + 20
-          })
-          setShow(true)
-          speak()
-        }
-      }, 5000)
-      return timer
-    }
-
-    let timer
-    if (window.speechSynthesis.getVoices().length > 0) {
-      timer = startGuide()
-    } else {
-      window.speechSynthesis.onvoiceschanged = () => {
-        if (!timer) timer = startGuide()
+    const timer = setTimeout(() => {
+      // Reposition arrow relative to TOOLS button
+      const toolsBtn = document.getElementById('nav-tools')
+      if (toolsBtn) {
+        const rect = toolsBtn.getBoundingClientRect()
+        setPosition({
+          left: rect.left + rect.width / 2,
+          top: rect.bottom + 20
+        })
+        setShow(true)
+        speak()
       }
-    }
+    }, 5000)
 
     // Close when TOOLS button is clicked
     const handleToolsClick = () => {
