@@ -10,22 +10,30 @@
 
 .card {
   width: min(600px, 90vw);
-  height: 350px;
+  min-height: 280px;
   background: #0d0f1f;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.25);
   border-radius: 32px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem 3rem;
+
   /* Initial state: off-screen right and hidden */
   opacity: 0;
   transform: translateX(150px);
   will-change: transform, opacity;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  
-  /* Transition specs */
-  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 0 rgba(139, 92, 246, 0);
+
+  /* Transition specs — include border, box-shadow, scale for hover */
+  transition:
+    transform 0.6s ease-out,
+    opacity 0.6s ease-out,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    scale 0.4s ease;
 }
 
 .card.visible {
@@ -35,9 +43,51 @@
   transition-delay: calc(var(--index) * 0.2s);
 }
 
-.number {
-  font-size: 6rem;
+.card:hover {
+  border-color: rgba(139, 92, 246, 0.75);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 24px 4px rgba(139, 92, 246, 0.35),
+    0 0 60px 8px rgba(139, 92, 246, 0.15);
+  scale: 1.03;
+  transition-delay: 0s;
+}
+
+.stat {
+  font-size: 4.5rem;
   font-weight: 800;
-  color: #fff;
-  opacity: 0.15;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+  flex: 1;
+}
+
+.source {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.source:hover {
+  color: rgba(255, 255, 255, 0.65);
 }

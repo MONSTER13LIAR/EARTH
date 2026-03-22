@@ -7,6 +7,7 @@ import WelcomeGuide from './components/WelcomeGuide'
 import EntryOverlay from './components/EntryOverlay'
 import Tools from './components/Tools'
 import History from './components/History'
+import AboutUs from './components/AboutUs'
 import ChatbotBar from './components/ChatbotBar'
 
 export default function App() {
@@ -27,6 +28,8 @@ export default function App() {
         return <Tools />
       case 'history':
         return <History />
+      case 'about':
+        return <AboutUs />
       case 'home':
       default:
         return (
