@@ -1,0 +1,28 @@
+.wrapper {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.playButton {
+  width: 100%;
+  min-height: 64px;
+  border: none;
+  border-radius: 14px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.audio {
+  width: 100%;
+}
+
+.error {
+  color: #b91c1c;
+  font-weight: 600;
+}

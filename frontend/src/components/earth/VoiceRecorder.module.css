@@ -1,0 +1,32 @@
+.wrapper {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.micButton {
+  width: 100%;
+  min-height: 64px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: #1f6feb;
+  color: #fff;
+}
+
+.meta { color: #555; }
+.transcript { text-align: center; color: #1f2937; }
+
+.errorBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffe5e5;
+  padding: 10px;
+  border-radius: 10px;
+}
