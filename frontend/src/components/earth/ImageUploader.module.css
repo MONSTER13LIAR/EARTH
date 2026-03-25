@@ -1,0 +1,32 @@
+.wrapper {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.uploadLabel { width: 100%; }
+.fileInput { display: none; }
+
+.uploadButton {
+  display: block;
+  width: 100%;
+  min-height: 64px;
+  border-radius: 14px;
+  background: #16a34a;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 64px;
+  cursor: pointer;
+}
+
+.preview {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  max-height: 280px;
+}

@@ -1,0 +1,21 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+}
+
+body {
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+.animations-paused *,
+.animations-paused *::before,
+.animations-paused *::after {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
