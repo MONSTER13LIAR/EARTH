@@ -1,0 +1,64 @@
+# -----------------------------
+# OS / Editor files
+# -----------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# -----------------------------
+# Logs / runtime
+# -----------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.pid
+*.pid.lock
+
+# -----------------------------
+# Environment / secrets
+# -----------------------------
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+
+# -----------------------------
+# Dependencies
+# -----------------------------
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+.pnpm-store/
+
+# -----------------------------
+# Build / coverage / caches
+# -----------------------------
+dist/
+build/
+coverage/
+.nyc_output/
+.cache/
+.parcel-cache/
+.vite/
+*.tsbuildinfo
+
+# Python caches (in case local scripts are used)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# -----------------------------
+# Temporary / local artifacts
+# -----------------------------
+tmp/
+*.tmp
+*.temp

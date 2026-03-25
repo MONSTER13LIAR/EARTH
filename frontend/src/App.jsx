@@ -9,10 +9,12 @@ import Tools from './components/Tools'
 import History from './components/History'
 import AboutUs from './components/AboutUs'
 import ChatbotBar from './components/ChatbotBar'
+import { clearAuthSession, fetchMe, getCurrentUser } from './services/api'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
   const [view, setView] = useState('home')
+  const [currentUser, setCurrentUser] = useState(getCurrentUser())
 
   useEffect(() => {
     if (!hasEntered) {
@@ -21,6 +23,32 @@ export default function App() {
       document.body.classList.remove('animations-paused')
     }
   }, [hasEntered])
+
+  useEffect(() => {
+    let mounted = true
+
+    const bootstrapAuth = async () => {
+      try {
+        const me = await fetchMe()
+        if (mounted) {
+          setCurrentUser(me.user)
+        }
+      } catch {
+        clearAuthSession()
+        if (mounted) {
+          setCurrentUser(null)
+        }
+      }
+    }
+
+    if (currentUser) {
+      void bootstrapAuth()
+    }
+
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   const renderView = () => {
     switch(view) {
@@ -46,7 +74,12 @@ export default function App() {
   return (
     <>
       {!hasEntered && <EntryOverlay onEnter={() => setHasEntered(true)} />}
-      <Navbar setView={setView} />
+      <Navbar
+        setView={setView}
+        currentUser={currentUser}
+        onAuthSuccess={setCurrentUser}
+        onLogout={() => setCurrentUser(null)}
+      />
       {renderView()}
       <ChatbotBar />
     </>
