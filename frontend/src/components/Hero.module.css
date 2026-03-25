@@ -1,0 +1,133 @@
+/* Outer wrapper — full viewport, centered */
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* The constrained stage that both the line and title share */
+.stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+}
+
+
+/* ── Phase 1: Line draws left → right ── */
+.line {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 1.5px;
+  background: #111;
+  will-change: width, opacity;
+
+  animation:
+    lineExpand 1.6s cubic-bezier(0.77, 0, 0.175, 1) 0.5s both,
+    lineFade   0.7s cubic-bezier(0.4, 0, 0.6, 1)   2.3s both;
+}
+
+@keyframes lineExpand {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes lineFade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ── Phase 2: "Earth" morphs out of the line ── */
+.title {
+  position: relative;
+  font-size: clamp(5rem, 20vw, 18rem);
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: #111;
+  white-space: nowrap;
+  line-height: 1;
+  text-indent: 0.2em;
+  text-shadow: 0px 8px 40px rgba(255, 255, 200, 0.4);
+
+  clip-path: inset(50% 0% 50% 0%);
+  opacity: 0;
+  will-change: clip-path, opacity;
+  animation: textMorph 1.5s cubic-bezier(0.4, 0, 0.2, 1) 2.1s both;
+}
+
+.torch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle at 50% 10%,
+    rgba(255, 255, 220, 0.15) 0%,
+    rgba(255, 255, 220, 0.05) 30%,
+    transparent 60%
+  );
+  clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  animation: fadeInTorch 1.5s ease-out 2.5s both;
+}
+
+@keyframes fadeInTorch {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.wordsRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 80vw; /* Match approximate visual width of EARTH title */
+  margin-top: 3rem;
+  opacity: 0;
+  animation: fadeIn 1s ease-out 3.2s both;
+}
+
+.wordItem {
+  flex: 1;
+  text-align: center;
+  font-size: clamp(0.7rem, 1vw, 1.1rem);
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes textMorph {
+  0% {
+    clip-path: inset(50% 0% 50% 0%);
+    opacity: 0;
+  }
+  /* Flash as a hair-thin strip — visually continuous with the
+     receding line — before opening into the full word. */
+  12% {
+    clip-path: inset(48.5% 0% 48.5% 0%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0% 0% 0% 0%);
+    opacity: 1;
+  }
+}

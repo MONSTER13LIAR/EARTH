@@ -1,0 +1,70 @@
+.chatbotBar {
+  position: fixed;
+  bottom: 20px;
+  left: 24px;
+  right: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 8px 32px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1001;
+}
+
+.micButton {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #0d0f1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.micIcon {
+  width: 24px;
+  height: 24px;
+  fill: #ffffff;
+}
+
+.chatInput {
+  flex-grow: 1;
+  height: 48px;
+  border-radius: 30px;
+  border: 1px solid #dddddd;
+  padding: 0 20px;
+  font-size: 16px;
+  outline: none;
+  background-color: #f9f9f9;
+}
+
+.chatInput::placeholder {
+  color: #888888;
+}
+
+.sendButton {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #0d0f1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sendIcon {
+  width: 24px;
+  height: 24px;
+  fill: #ffffff;
+  transform: translateX(2px); /* Slight adjustment for visual centering of paperplane */
+}
