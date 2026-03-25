@@ -36,6 +36,7 @@
 
 .chatInput {
   flex-grow: 1;
+  min-width: 0;
   height: 48px;
   border-radius: 30px;
   border: 1px solid #dddddd;
@@ -67,4 +68,30 @@
   height: 24px;
   fill: #ffffff;
   transform: translateX(2px); /* Slight adjustment for visual centering of paperplane */
+}
+
+@media (max-width: 480px) {
+  .chatbotBar {
+    padding: 6px 10px;
+    gap: 8px;
+    left: 10px;
+    right: 10px;
+    bottom: 14px;
+  }
+  .micButton,
+  .sendButton {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+  .micIcon,
+  .sendIcon {
+    width: 18px;
+    height: 18px;
+  }
+  .chatInput {
+    height: 38px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
 }

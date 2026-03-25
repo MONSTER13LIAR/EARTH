@@ -17,6 +17,7 @@
   overflow: visible;
   flex-shrink: 0;
   margin-top: -300px;
+  pointer-events: none;
 }
 
 .glowBg {
@@ -153,4 +154,34 @@
 
 .source:hover {
   color: rgba(255, 255, 255, 0.65);
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 4rem 1rem 0;
+    gap: 2.5rem;
+  }
+  .glowArea {
+    margin-top: -150px;
+    height: 300px;
+  }
+  .glowBg {
+    height: 300px;
+  }
+  .glowBase {
+    height: 300px;
+  }
+  .card {
+    padding: 1.75rem 1.5rem;
+    min-height: unset;
+  }
+  .stat {
+    font-size: 3rem;
+  }
+  .title {
+    font-size: 0.95rem;
+  }
+  .description {
+    font-size: 0.95rem;
+  }
 }

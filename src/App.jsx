@@ -47,6 +47,18 @@ export default function App() {
               outline: 'none',
             }} />
             <Marquee />
+            <div style={{ background: '#000', width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <h2 style={{
+                fontSize: 'clamp(2rem, 8vw, 6rem)',
+                fontWeight: '900',
+                color: 'white',
+                textAlign: 'center',
+                margin: 'clamp(40px, 8vw, 80px) auto clamp(20px, 4vw, 40px) auto',
+                letterSpacing: 'clamp(2px, 1vw, 8px)',
+                textTransform: 'uppercase',
+                padding: '0 16px',
+              }}>The Problems</h2>
+            </div>
             <Cards />
             {hasEntered && <WelcomeGuide />}
           </>

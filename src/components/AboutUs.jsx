@@ -1,18 +1,49 @@
 import styles from './AboutUs.module.css'
 
 export default function AboutUs() {
-  const problems = [
-    { text: "56% of rural elderly are illiterate — cannot read medicine labels", colorClass: styles.red },
-    { text: "42% of rural students cannot understand English textbooks", colorClass: styles.blue },
-    { text: "60% of farmers face crop diseases with no expert guidance", colorClass: styles.green },
-    { text: "50%+ interest charged by informal moneylenders to rural farmers", colorClass: styles.amber },
+  const problemCategories = [
+    {
+      tool: "Swasth Raho",
+      problems: [
+        "Cannot read medicine labels due to illiteracy",
+        "Wrong medication dosage causing fatal errors",
+        "Cannot understand what the doctor said",
+        "No access to basic medical diagnosis"
+      ]
+    },
+    {
+      tool: "Pustak Dost",
+      problems: [
+        "Cannot understand English textbooks",
+        "No career guidance for rural youth",
+        "Unaware of government skill and job schemes"
+      ]
+    },
+    {
+      tool: "Kisan Rath",
+      problems: [
+        "Crop disease with no expert help available",
+        "Wrong fertilizer and pesticide dosage",
+        "Trapped in informal loans at 60% interest",
+        "Unaware of government farming schemes"
+      ]
+    },
+    {
+      tool: "Shakti",
+      problems: [
+        "Domestic abuse with no safe way to get help",
+        "Rural women unaware of their legal rights",
+        "No silent emergency SOS in danger",
+        "Unaware of women's scholarships and schemes"
+      ]
+    }
   ]
 
   const tools = [
-    { name: "Dawa Sunaao", desc: "Medicine label reader", colorClass: styles.red },
-    { name: "Pustak Dost", desc: "Textbook simplifier", colorClass: styles.blue },
-    { name: "Kisaan Marg", desc: "Crop doctor and loan advisor", colorClass: styles.green },
-    { name: "Hunar Upyog", desc: "Job and skill finder", colorClass: styles.amber },
+    { name: "Swasth Raho", desc: "Complete rural health companion — medicine reader, symptom checker, doctor visit explainer, health profile" },
+    { name: "Pustak Dost", desc: "Education and career guide — textbook simplifier, career roadmap, job and skill scheme finder" },
+    { name: "Kisan Rath", desc: "Complete farming companion — crop disease detector, loan explainer, government scheme matcher, farm scaling guide" },
+    { name: "Shakti", desc: "Women's safety and empowerment — silent SOS, abuse reporting, legal rights guide, health and scholarship finder" },
   ]
 
   const sdgs = [
@@ -33,18 +64,22 @@ export default function AboutUs() {
       <section className={styles.section}>
         <h2 className={styles.sectionHeading}>Our Mission</h2>
         <p className={styles.missionText}>
-          EARTH is a voice-first, Hindi-first rural companion app built for the 600 million people
-          of rural India. We believe technology should work for everyone — not just those who can
-          read English or afford expensive tools.
+          EARTH is a voice-first, Hindi-first digital toolkit built for rural India. We believe the biggest barrier between rural communities and a better life is not resources — it is access to information they can understand. EARTH breaks that barrier across health, education, farming, and women's safety — in their language, on their phone, for free.
         </p>
       </section>
 
       <section className={styles.section}>
-        <h2 className={styles.sectionHeading}>The Problem</h2>
-        <div className={styles.problemGrid}>
-          {problems.map((p, i) => (
-            <div key={i} className={`${styles.statCard} ${p.colorClass}`}>
-              {p.text}
+        <h2 className={styles.sectionHeading}>The Problem We Solve</h2>
+        <div className={styles.problemList}>
+          {problemCategories.map((cat, i) => (
+            <div key={i} className={styles.problemCard}>
+              <h3 className={styles.problemToolName}>{cat.tool}</h3>
+              <div className={styles.divider} />
+              <ul className={styles.problemItems}>
+                {cat.problems.map((prob, j) => (
+                  <li key={j} className={styles.problemItem}>— {prob}</li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
@@ -54,7 +89,7 @@ export default function AboutUs() {
         <h2 className={styles.sectionHeading}>What We Built</h2>
         <div className={styles.toolsRow}>
           {tools.map((t, i) => (
-            <div key={i} className={`${styles.toolCard} ${t.colorClass}`}>
+            <div key={i} className={styles.toolCard}>
               <div className={styles.toolName}>{t.name}</div>
               <div className={styles.toolDesc}>{t.desc}</div>
             </div>

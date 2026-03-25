@@ -5,9 +5,22 @@ export default function WelcomeGuide() {
   const [show, setShow] = useState(false)
   const [position, setPosition] = useState({ left: 0, top: 0 })
 
+  const updatePosition = () => {
+    const toolsBtn = document.getElementById('nav-tools')
+    if (!toolsBtn) return
+    const rect = toolsBtn.getBoundingClientRect()
+    if (rect.width === 0) return
+    // SVG is 100px tall on desktop, 50px on mobile (via CSS media query).
+    // Arrow tip sits at y=2 in a 0-24 viewBox, so offset = (2/24) * renderedHeight.
+    const svgHeight = window.innerWidth > 768 ? 100 : 50
+    const tipOffset = (2 / 24) * svgHeight
+    setPosition({
+      left: rect.left + rect.width / 2,
+      top: rect.bottom - tipOffset
+    })
+  }
+
   useEffect(() => {
-    // This effect runs only when the component is mounted 
-    // (which happens after EntryOverlay sets hasEntered to true)
     const speak = () => {
       const msg = new SpeechSynthesisUtterance()
       msg.text = "Welcome to EARTH. Your rural companion app. Please select your tool to get started."
@@ -18,20 +31,22 @@ export default function WelcomeGuide() {
     }
 
     const timer = setTimeout(() => {
-      // Reposition arrow relative to TOOLS button
       const toolsBtn = document.getElementById('nav-tools')
       if (toolsBtn) {
-        const rect = toolsBtn.getBoundingClientRect()
-        setPosition({
-          left: rect.left + rect.width / 2,
-          top: rect.bottom + 20
-        })
+        updatePosition()
         setShow(true)
         speak()
       }
     }, 3000)
 
-    // Close when TOOLS button is clicked
+    // Debounced resize — wait for layout to settle before recalculating
+    let resizeTimer
+    const handleResize = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(updatePosition, 150)
+    }
+    window.addEventListener('resize', handleResize)
+
     const handleToolsClick = () => {
       setShow(false)
       window.speechSynthesis.cancel()
@@ -44,6 +59,8 @@ export default function WelcomeGuide() {
 
     return () => {
       clearTimeout(timer)
+      clearTimeout(resizeTimer)
+      window.removeEventListener('resize', handleResize)
       if (toolsBtn) {
         toolsBtn.removeEventListener('click', handleToolsClick)
       }
@@ -53,8 +70,8 @@ export default function WelcomeGuide() {
   if (!show) return null
 
   return (
-    <div 
-      className={styles.guideOverlay} 
+    <div
+      className={styles.guideOverlay}
       style={{ left: `${position.left}px`, top: `${position.top}px` }}
     >
       <div className={styles.arrowContainer}>

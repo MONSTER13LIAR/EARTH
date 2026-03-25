@@ -3,24 +3,24 @@ import styles from './Tools.module.css'
 export default function Tools() {
   const toolsData = [
     {
-      name: "Dawa Sunaao",
-      description: "Medicine label reader",
+      name: "Swasth Raho",
+      description: "Your complete rural health companion — scan medicine labels, check symptoms, understand your doctor's advice, all in Hindi",
       color: "#E53935",
     },
     {
       name: "Pustak Dost",
-      description: "Textbook simplifier",
+      description: "Your education and career guide — simplify textbooks, get a career roadmap, find jobs and government skill schemes",
       color: "#1E88E5",
     },
     {
-      name: "Kisaan Marg",
-      description: "Crop doctor and loan advisor",
+      name: "Kisan Rath",
+      description: "Your complete farming companion — detect crop disease, understand loan documents, find government schemes and scale your farm",
       color: "#43A047",
     },
     {
-      name: "Hunar Upyog",
-      description: "Job and skill finder",
-      color: "#FB8C00",
+      name: "Shakti",
+      description: "Women's safety and empowerment — know your rights, report abuse safely, find scholarships and health guidance privately",
+      color: "#7C3AED",
     },
   ]
 

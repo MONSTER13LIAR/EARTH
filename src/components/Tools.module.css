@@ -1,8 +1,8 @@
 .pageContainer {
-  background-color: #ffffff;
+  background-color: #0a0b1a;
   min-height: 100vh;
   width: 100%;
-  padding: 180px 24px 60px; /* Top padding keeps space for fixed navbar, 24px sides */
+  padding: 120px 24px 60px; /* Adjusted to give 60px clearance if navbar is ~60px */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,40 +11,78 @@
 .cardContainer {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Increased gap */
+  gap: 32px;
   width: 100%;
   align-items: center;
 }
 
 .card {
   width: 100%;
-  max-width: 600px; /* Max width 600px */
-  min-height: 160px; /* Increased height */
+  max-width: 680px;
+  min-height: 200px;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  box-shadow: 
+    0 0 20px rgba(124, 58, 237, 0.5),
+    0 0 60px rgba(124, 58, 237, 0.25),
+    0 8px 32px rgba(0, 0, 0, 0.4);
   text-decoration: none;
   border: none;
   cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 0 30px rgba(124, 58, 237, 0.8),
+    0 0 80px rgba(124, 58, 237, 0.4),
+    0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.card:hover .cardName {
+  font-size: 30px;
 }
 
 .cardName {
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  transition: font-size 0.3s ease;
 }
 
 .cardDesc {
-  font-size: 1.1rem;
+  font-size: 14px;
   font-weight: 400;
   color: #ffffff;
-  opacity: 0.9;
+  opacity: 0.95;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 80px 16px 40px;
+  }
+  .card {
+    padding: 28px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 64px 12px 32px;
+  }
+  .card {
+    padding: 24px 16px;
+  }
+  .cardName {
+    font-size: 20px;
+  }
 }
