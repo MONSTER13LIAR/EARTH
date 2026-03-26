@@ -14,6 +14,7 @@ export default function Navbar({ setView }) {
           <li><a href="#tools" id="nav-tools" onClick={(e) => handleClick(e, 'tools')}>TOOLS</a></li>
           <li><a href="#history" onClick={(e) => handleClick(e, 'history')}>HISTORY</a></li>
           <li><a href="#about" onClick={(e) => handleClick(e, 'about')}>ABOUT US</a></li>
+          <li><a href="#chatbot" onClick={(e) => handleClick(e, 'chatbot')}>CHATBOT</a></li>
         </ul>
       </div>
     </nav>

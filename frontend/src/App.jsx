@@ -9,6 +9,7 @@ import Tools from './components/Tools'
 import History from './components/History'
 import AboutUs from './components/AboutUs'
 import ChatbotBar from './components/ChatbotBar'
+import Chatbot from './features/chatbot/Chatbot'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
@@ -30,6 +31,8 @@ export default function App() {
         return <History />
       case 'about':
         return <AboutUs />
+      case 'chatbot':
+        return <Chatbot />
       case 'home':
       default:
         return (
@@ -71,7 +74,9 @@ export default function App() {
       {!hasEntered && <EntryOverlay onEnter={() => setHasEntered(true)} />}
       <Navbar setView={setView} />
       {renderView()}
-      <ChatbotBar />
+      {view !== 'chatbot' && (
+        <ChatbotBar onNavigate={() => setView('chatbot')} />
+      )}
     </>
   )
 }

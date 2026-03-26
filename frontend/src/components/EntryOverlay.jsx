@@ -12,6 +12,12 @@ export default function EntryOverlay({ onEnter }) {
       })
       .catch(err => console.log(err));
 
+    // Request location permission at entry
+    navigator.geolocation.getCurrentPosition(
+      () => {},
+      (err) => console.log(err)
+    );
+
     setIsFading(true)
     setTimeout(() => {
       onEnter()
