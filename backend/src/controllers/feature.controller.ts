@@ -308,6 +308,25 @@ export async function doctorVisitExplainer(req: Request, res: Response): Promise
   res.json(parsed);
 }
 
+export async function chatbot(req: Request, res: Response): Promise<void> {
+  const userId = getRequiredUserId(req);
+  const { message, history } = req.body as {
+    message: string;
+    history?: Array<{ role: "user" | "assistant"; content: string }>;
+  };
+
+  await ensureUser(userId);
+
+  const language = inferResponseLanguageFromMany([message]);
+  const { text } = await callLLM(
+    promptTemplates.chatbot,
+    { message, history: history ?? [], userId },
+    language
+  );
+
+  res.json({ reply: text });
+}
+
 export function getPromptSamples(_req: Request, res: Response): void {
   res.json(promptTemplates);
 }
