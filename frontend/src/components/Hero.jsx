@@ -8,15 +8,15 @@ export default function Hero() {
         scene="https://prod.spline.design/SU8t11v6uwkt1Jxn/scene.splinecode"
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           width: '100%',
           height: '100%',
           zIndex: 0
         }}
       />
-      <div className={styles.torch} aria-hidden="true" />
-      <div className={styles.stage}>
+<div className={styles.stage}>
         <div className={styles.line} aria-hidden="true" />
         <h1 className={styles.title}>EARTH</h1>
         <div className={styles.wordsRow}>

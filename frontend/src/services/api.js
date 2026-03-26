@@ -196,6 +196,27 @@ export async function doctorVisitExplainer(payload) {
   return parseResponse(response);
 }
 
+export async function chatWithEarth(message) {
+  const response = await fetch(`${API_BASE_URL}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message }),
+  });
+  return parseResponse(response);
+}
+
+export async function sendChatMessage(message, history = []) {
+  ensureTokenPresent();
+
+  const response = await fetch(`${API_BASE_URL}/api/features/chat`, {
+    method: "POST",
+    headers: getAuthHeaders({ "Content-Type": "application/json" }),
+    body: JSON.stringify({ message, history }),
+  });
+
+  return parseResponse(response);
+}
+
 export async function getPromptSamples() {
   ensureTokenPresent();
 

@@ -1,209 +1,77 @@
 .navWrapper {
   position: fixed;
-  top: 20px;
+  top: 60px;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
-  z-index: 1300;
+  z-index: 1000;
+  pointer-events: none;
 }
 
 .pill {
-  width: min(1200px, calc(100vw - 24px));
+  pointer-events: auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  background: rgba(17, 24, 39, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(20px);
-  border-radius: 999px;
-  padding: 10px 16px;
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.28);
+  justify-content: center;
+  background: rgba(13, 15, 31, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 28px 100px;
+  border-radius: 200px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
 }
 
 .links {
   display: flex;
   list-style: none;
-  gap: 18px;
+  gap: 100px;
   margin: 0;
   padding: 0;
 }
 
-.links a {
+.links li a {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.92rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  transition: all 0.2s;
 }
 
-.authActions {
-  display: flex;
-  gap: 8px;
-}
-
-.loginBtn,
-.signupBtn {
-  min-height: 38px;
-  border: none;
-  border-radius: 10px;
-  padding: 0 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.loginBtn {
-  background: #1f2937;
+.links li a:hover {
   color: #fff;
 }
 
-.signupBtn {
-  background: linear-gradient(135deg, #2563eb, #4f46e5);
-  color: #fff;
-}
-
-.profileArea { position: relative; }
-
-.profileBtn {
-  min-height: 40px;
-  border: none;
-  border-radius: 999px;
-  padding: 0 10px 0 6px;
-  background: #0f172a;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-  background: #2563eb;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-}
-
-.userName {
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.profileMenu {
-  position: absolute;
-  right: 0;
-  top: 48px;
-  width: 220px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 10px;
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.16);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.profileMenu p {
-  margin: 0;
-  font-size: 0.86rem;
-  color: #6b7280;
-}
-
-.profileMenu button {
-  min-height: 36px;
-  border: none;
-  border-radius: 8px;
-  background: #f3f4f6;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.authModalBackdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 6, 23, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1400;
-}
-
-.authModal {
-  width: min(92vw, 420px);
-  background: #fff;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.modeRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.modeBtn,
-.modeActive {
-  min-height: 42px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.modeBtn { background: #f3f4f6; }
-.modeActive { background: #111827; color: #fff; }
-
-.authInput {
-  min-height: 44px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  padding: 0 10px;
-}
-
-.authSubmit {
-  min-height: 48px;
-  border: none;
-  border-radius: 12px;
-  background: #2563eb;
-  color: white;
-  font-size: 1rem;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.authError {
-  margin: 0;
-  color: #b91c1c;
-  background: #fee2e2;
-  border-radius: 8px;
-  padding: 8px;
-}
-
-@media (max-width: 900px) {
-  .pill {
-    border-radius: 16px;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 12px;
+@media (max-width: 768px) {
+  .navWrapper {
+    top: 24px;
   }
-
   .links {
-    justify-content: space-between;
-    gap: 10px;
+    gap: 24px;
   }
+  .pill {
+    padding: 14px 30px;
+  }
+  .links li a {
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+  }
+}
 
-  .authActions {
-    justify-content: flex-end;
+@media (max-width: 480px) {
+  .navWrapper {
+    top: 16px;
+  }
+  .pill {
+    padding: 12px 18px;
+  }
+  .links {
+    gap: 14px;
+  }
+  .links li a {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
   }
 }

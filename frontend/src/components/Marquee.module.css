@@ -1,10 +1,24 @@
 .marqueeWrapper {
   width: 100%;
   overflow: hidden;
-  padding: 5rem 0;
+  padding: 3rem 0;
   display: flex;
   align-items: center;
   position: relative;
+  background: #000000;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+
+  /* Reveal initial state */
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+}
+
+.marqueeWrapper.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Fade effects on left and right */
@@ -23,8 +37,8 @@
   left: 0;
   background: linear-gradient(
     to right,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
@@ -32,39 +46,77 @@
   right: 0;
   background: linear-gradient(
     to left,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
-/* 
- * We use two identical sets of cards in the track 
- * and move the track to -50% to reset seamlessly.
- */
 .track {
   display: flex;
   width: fit-content;
-  gap: 2rem;
+  gap: 3.5rem;
   padding: 0 1rem;
-  animation: marqueeLoop 22s linear infinite;
+  animation: marqueeLoop 30s linear infinite; /* Slightly slower for larger cards */
   will-change: transform;
 }
 
 .card {
   flex-shrink: 0;
-  width: 320px;
-  height: 120px;
-  background: #0d0f1f;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
+  width: auto;
+  min-width: 320px;
+  height: auto;
+  background: #111111;
+  border: 1px solid #7C3AED;
+  border-radius: 16px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 600;
-  font-size: 1.4rem;
-  letter-spacing: 0.08em;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  padding: 24px 32px;
+  box-shadow:
+    0 0 12px rgba(124, 58, 237, 0.4),
+    0 0 24px rgba(124, 58, 237, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 16px rgba(124, 58, 237, 0.6),
+    0 0 32px rgba(124, 58, 237, 0.3);
+}
+
+.boldText {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.toolName {
+  color: #9B7FE8;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 480px) {
+  .marqueeWrapper::before,
+  .marqueeWrapper::after {
+    width: 40px;
+  }
+  .card {
+    min-width: 220px;
+    padding: 16px 20px;
+  }
+  .boldText {
+    font-size: 15px;
+  }
+  .toolName {
+    font-size: 11px;
+  }
 }
 
 @keyframes marqueeLoop {
@@ -72,7 +124,6 @@
     transform: translateX(0);
   }
   100% {
-    /* Moves exactly half the track width (one full set of cards + their gaps) */
     transform: translateX(-50%);
   }
 }
