@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  chatbot,
   doctorOrHomeDecision,
   doctorVisitExplainer,
   getPromptSamples,
@@ -34,3 +35,4 @@ featureRouter.post(
   requireFields(["partialVoiceMemory"]),
   doctorVisitExplainer
 );
+featureRouter.post("/chat", requireFields(["message"]), chatbot);
