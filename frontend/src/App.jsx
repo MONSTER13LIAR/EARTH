@@ -14,6 +14,7 @@ import Chatbot from './features/chatbot/Chatbot'
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
   const [view, setView] = useState('home')
+  const [language, setLanguage] = useState(localStorage.getItem('earth_language') || 'en')
 
   useEffect(() => {
     if (!hasEntered) {
@@ -63,7 +64,7 @@ export default function App() {
               }}>The Problems</h2>
             </div>
             <Cards />
-            {hasEntered && <WelcomeGuide />}
+            {hasEntered && <WelcomeGuide language={language} />}
           </>
         )
     }
@@ -71,7 +72,7 @@ export default function App() {
 
   return (
     <>
-      {!hasEntered && <EntryOverlay onEnter={() => setHasEntered(true)} />}
+      {!hasEntered && <EntryOverlay onEnter={(lang) => { setLanguage(lang); setHasEntered(true) }} />}
       <Navbar setView={setView} />
       {renderView()}
       {view !== 'chatbot' && (
