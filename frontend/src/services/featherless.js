@@ -201,3 +201,44 @@ verdict rules:
     }
   }
 }
+
+/**
+ * Explain what a doctor likely said based on patient's hazy memory.
+ * Returns { summary, key_points, what_it_means, follow_up, urgent }
+ */
+export async function explainDoctorVisit(memory) {
+  const lang    = localStorage.getItem('earth_language') || 'en'
+  const isHindi = lang === 'hi'
+
+  const langLine = isHindi
+    ? 'Respond ONLY in simple Hindi (हिंदी में जवाब दें). बहुत सरल भाषा में जवाब दें।'
+    : 'Respond in simple English.'
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a patient-friendly doctor helping rural Indian patients understand what their doctor told them. ${langLine}
+
+The patient will share what they vaguely remember from their doctor visit. Interpret it and return ONLY valid JSON — no markdown, no extra text:
+{
+  "summary": "1-2 sentence plain-language summary of what the doctor likely said",
+  "key_points": ["point 1", "point 2", "point 3"],
+  "what_it_means": "explanation of the likely diagnosis or condition in very simple words",
+  "follow_up": "what the patient should do next — take medicines, rest, come back after X days etc.",
+  "urgent": true or false (true if anything in their memory sounds like an emergency or serious warning)
+}`,
+    },
+    {
+      role: 'user',
+      content: `What the patient remembers from their doctor visit:\n\n"${memory}"`,
+    },
+  ]
+
+  const reply = await featherlessChat(messages, { max_tokens: 600 })
+  const clean = reply.replace(/```json|```/g, '').trim()
+  try {
+    return JSON.parse(clean)
+  } catch {
+    return { summary: reply, key_points: [], what_it_means: '', follow_up: '', urgent: false }
+  }
+}
