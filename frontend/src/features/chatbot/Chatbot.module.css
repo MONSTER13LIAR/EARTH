@@ -307,6 +307,97 @@
   transform: translateX(1px);
 }
 
+/* ── MEDICINE BUBBLE ─────────────────────────────────────── */
+.medicineBubbleWrap {
+  max-width: 80%;
+  padding: 0;
+  background: transparent;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.medicineBubble {
+  background: linear-gradient(135deg, #0f1232 0%, #19103c 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.medicineChips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 16px;
+  border-right: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.chip:last-child {
+  border-right: none;
+}
+
+.chipLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #a78bfa;
+}
+
+.chipValue {
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.medicineExplanation {
+  padding: 16px 18px;
+  font-size: 0.93rem;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+}
+
+/* ── SPEAKING BADGE ──────────────────────────────────────── */
+.speakingBadge {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.45);
+  color: #c4b5fd;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 1200;
+  backdrop-filter: blur(8px);
+  letter-spacing: 0.3px;
+}
+
+.speakDot {
+  width: 8px;
+  height: 8px;
+  background: #a78bfa;
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
 /* ── MOBILE ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .page {
@@ -327,5 +418,22 @@
 
   .bubble {
     max-width: 88%;
+  }
+
+  .medicineBubbleWrap {
+    max-width: 96%;
+  }
+
+  .medicineChips {
+    grid-template-columns: 1fr;
+  }
+
+  .chip {
+    border-right: none;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+  }
+
+  .chip:last-child {
+    border-bottom: none;
   }
 }
