@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from './WelcomeGuide.module.css'
 
-export default function WelcomeGuide() {
+export default function WelcomeGuide({ language = 'en' }) {
   const [show, setShow] = useState(false)
   const [position, setPosition] = useState({ left: 0, top: 0 })
 
@@ -23,8 +23,13 @@ export default function WelcomeGuide() {
   useEffect(() => {
     const speak = () => {
       const msg = new SpeechSynthesisUtterance()
-      msg.text = "Welcome to EARTH. Your rural companion app. Please select your tool to get started."
-      msg.lang = "hi-IN"
+      if (language === 'hi') {
+        msg.text = "EARTH में आपका स्वागत है। यह आपका ग्रामीण साथी ऐप है। शुरू करने के लिए कृपया टूल्स पर क्लिक करें।"
+        msg.lang = "hi-IN"
+      } else {
+        msg.text = "Welcome to EARTH. Your rural companion app. Please click on Tools to get started."
+        msg.lang = "en-IN"
+      }
       msg.rate = 0.8
       msg.pitch = 1
       window.speechSynthesis.speak(msg)
@@ -80,7 +85,7 @@ export default function WelcomeGuide() {
             <path d="M12 2L2 12h5v10h10V12h5L12 2z" />
           </svg>
         </div>
-        <div className={styles.label}>Click here to begin</div>
+        <div className={styles.label}>{language === 'hi' ? 'यहाँ क्लिक करें' : 'Click here to begin'}</div>
       </div>
     </div>
   )
