@@ -12,6 +12,7 @@ import ChatbotBar from './components/ChatbotBar'
 import Chatbot from './features/chatbot/Chatbot'
 import SwasthRaho from './features/swasth-raho/SwasthRaho'
 import SymptomChecker from './features/swasth-raho/SymptomChecker'
+import DoctorExplainer from './features/swasth-raho/DoctorExplainer'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
@@ -35,6 +36,8 @@ export default function App() {
         return <SwasthRaho setView={setView} onOcrFile={(file) => { setPendingOcrFile(file); setView('chatbot') }} />
       case 'symptom-checker':
         return <SymptomChecker setView={setView} />
+      case 'doctor-explainer':
+        return <DoctorExplainer setView={setView} />
       case 'history':
         return <History />
       case 'about':

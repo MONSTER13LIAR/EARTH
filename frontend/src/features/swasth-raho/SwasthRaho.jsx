@@ -20,14 +20,15 @@ export default function SwasthRaho({ setView, onOcrFile }) {
     {
       icon: '🏥',
       title: 'Doctor Visit Explainer',
-      desc: "Upload your doctor's prescription and get it explained in simple language.",
-      action: null,
+      desc: "Write or speak what you remember from your doctor visit and AI will explain what it means.",
+      action: 'doctor',
     },
   ]
 
   const handleCardClick = (card) => {
     if (card.action === 'medicine') fileInputRef.current.click()
     if (card.action === 'symptom')  setView('symptom-checker')
+    if (card.action === 'doctor')   setView('doctor-explainer')
   }
 
   const handleFileChange = (e) => {
