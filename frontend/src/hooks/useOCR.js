@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import Tesseract from "tesseract.js";
 
 function cleanOCRText(text) {
   return text
@@ -8,7 +7,7 @@ function cleanOCRText(text) {
     .trim();
 }
 
-function withFilteredTesseractWarnings(fn) {
+async function withFilteredTesseractWarnings(fn) {
   const originalWarn = console.warn;
   const ignored = [
     "Parameter not found: classify_misfit_junk_penalty",
@@ -29,6 +28,9 @@ function withFilteredTesseractWarnings(fn) {
 }
 
 export async function extractTextFromImage(file) {
+  // Lazy-load tesseract only when OCR is actually needed
+  const { default: Tesseract } = await import("tesseract.js");
+
   const result = await withFilteredTesseractWarnings(() =>
     Tesseract.recognize(file, "eng+hin", {
       logger: () => {},

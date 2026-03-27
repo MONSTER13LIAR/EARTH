@@ -1,11 +1,12 @@
 import styles from './Tools.module.css'
 
-export default function Tools() {
+export default function Tools({ setView }) {
   const toolsData = [
     {
       name: "Swasth Raho",
       description: "Your complete rural health companion — scan medicine labels, check symptoms, understand your doctor's advice, all in Hindi",
       color: "#E53935",
+      view: "swasth-raho",
     },
     {
       name: "Pustak Dost",
@@ -28,10 +29,11 @@ export default function Tools() {
     <div className={styles.pageContainer}>
       <div className={styles.cardContainer}>
         {toolsData.map((tool, index) => (
-          <div 
-            key={index} 
-            className={styles.card} 
+          <div
+            key={index}
+            className={styles.card}
             style={{ backgroundColor: tool.color }}
+            onClick={() => tool.view && setView(tool.view)}
           >
             <h2 className={styles.cardName}>{tool.name}</h2>
             <p className={styles.cardDesc}>{tool.description}</p>

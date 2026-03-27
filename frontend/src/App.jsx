@@ -10,11 +10,14 @@ import History from './components/History'
 import AboutUs from './components/AboutUs'
 import ChatbotBar from './components/ChatbotBar'
 import Chatbot from './features/chatbot/Chatbot'
+import SwasthRaho from './features/swasth-raho/SwasthRaho'
+import SymptomChecker from './features/swasth-raho/SymptomChecker'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
   const [view, setView] = useState('home')
   const [language, setLanguage] = useState(localStorage.getItem('earth_language') || 'en')
+  const [pendingOcrFile, setPendingOcrFile] = useState(null)
 
   useEffect(() => {
     if (!hasEntered) {
@@ -27,13 +30,17 @@ export default function App() {
   const renderView = () => {
     switch(view) {
       case 'tools':
-        return <Tools />
+        return <Tools setView={setView} />
+      case 'swasth-raho':
+        return <SwasthRaho setView={setView} onOcrFile={(file) => { setPendingOcrFile(file); setView('chatbot') }} />
+      case 'symptom-checker':
+        return <SymptomChecker setView={setView} />
       case 'history':
         return <History />
       case 'about':
         return <AboutUs />
       case 'chatbot':
-        return <Chatbot />
+        return <Chatbot ocrFile={pendingOcrFile} onOcrFileClear={() => setPendingOcrFile(null)} />
       case 'home':
       default:
         return (

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { chatWithEarth } from "../../services/api";
+import { analyseMedicineLabelFromImage } from "../../services/featherless";
 import { useSpeechRecognition } from "../../hooks/useSpeechRecognition";
 import styles from "./Chatbot.module.css";
 
@@ -11,19 +12,94 @@ const PAST_CHATS = [
   "Women's safety laws",
 ];
 
-export default function Chatbot() {
+function MedicineBubble({ data }) {
+  return (
+    <div className={styles.medicineBubble}>
+      <div className={styles.medicineChips}>
+        <div className={styles.chip}>
+          <span className={styles.chipLabel}>Expiry</span>
+          <span className={styles.chipValue}>{data.expiry || "—"}</span>
+        </div>
+        <div className={styles.chip}>
+          <span className={styles.chipLabel}>Used For</span>
+          <span className={styles.chipValue}>{data.purpose || "—"}</span>
+        </div>
+        <div className={styles.chip}>
+          <span className={styles.chipLabel}>Price / MRP</span>
+          <span className={styles.chipValue}>{data.price || "—"}</span>
+        </div>
+      </div>
+      <div className={styles.medicineExplanation}>{data.explanation}</div>
+    </div>
+  );
+}
+
+export default function Chatbot({ ocrFile, onOcrFileClear }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [toast, setToast] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const bottomRef = useRef(null);
+  const processedRef = useRef(false);
 
   const showToast = () => {
     setToast(true);
     setTimeout(() => setToast(false), 3000);
   };
 
+  // ── OCR → Featherless → Web Speech ──────────────────────
+  useEffect(() => {
+    if (!ocrFile || processedRef.current) return;
+    processedRef.current = true;
+
+    const run = async () => {
+      // user message
+      setMessages([{ role: "user", content: "📷 Medicine label image uploaded — reading with AI vision..." }]);
+      setLoading(true);
+      onOcrFileClear?.();
+
+      try {
+        // Vision model reads the image directly — no Tesseract needed
+        const data = await analyseMedicineLabelFromImage(ocrFile);
+
+        // Step 3: push medicine result bubble
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", type: "medicine", data },
+        ]);
+
+        // Step 4: Web Speech
+        if (data.explanation) {
+          const lang = localStorage.getItem("earth_language") || "en";
+          const isHindi = lang === "hi";
+          const speakText = isHindi
+            ? `${data.purpose ? "यह दवाई " + data.purpose + " के लिए है। " : ""}${data.expiry ? "इसकी एक्सपायरी " + data.expiry + " है। " : ""}${data.explanation}`
+            : `${data.purpose ? "This medicine is used for " + data.purpose + ". " : ""}${data.expiry ? "Expiry: " + data.expiry + ". " : ""}${data.explanation}`;
+          window.speechSynthesis.cancel();
+          const utt = new SpeechSynthesisUtterance(speakText);
+          utt.lang = isHindi ? "hi-IN" : "en-IN";
+          utt.rate = 0.88;
+          setSpeaking(true);
+          utt.onend = () => setSpeaking(false);
+          utt.onerror = () => setSpeaking(false);
+          window.speechSynthesis.speak(utt);
+        }
+      } catch (err) {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: err.message || "Something went wrong reading the label." },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    run();
+  }, [ocrFile]);
+
+  // ── Regular chat ────────────────────────────────────────
   const handleSend = async (text) => {
     const trimmed = (text ?? input).trim();
     if (!trimmed || loading) return;
@@ -43,7 +119,6 @@ export default function Chatbot() {
     }
   };
 
-  // Pick up message sent from the global sticky bar
   useEffect(() => {
     const pending = localStorage.getItem("pendingMessage");
     if (pending) {
@@ -75,15 +150,27 @@ export default function Chatbot() {
     startListening();
   };
 
+  const handleStopSpeak = () => {
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+  };
+
   return (
     <div className={styles.page}>
       {toast && (
         <div style={{
-          position: 'fixed', bottom: 100, left: '50%', transform: 'translateX(-50%)',
-          background: '#333', color: '#fff', padding: '8px 18px', borderRadius: 8,
+          position: "fixed", bottom: 100, left: "50%", transform: "translateX(-50%)",
+          background: "#333", color: "#fff", padding: "8px 18px", borderRadius: 8,
           fontSize: 13, zIndex: 1100,
         }}>
           Voice not supported on this browser
+        </div>
+      )}
+
+      {speaking && (
+        <div className={styles.speakingBadge} onClick={handleStopSpeak}>
+          <span className={styles.speakDot} />
+          Speaking... (tap to stop)
         </div>
       )}
 
@@ -116,14 +203,23 @@ export default function Chatbot() {
             </div>
           )}
 
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`${styles.bubble} ${msg.role === "user" ? styles.userBubble : styles.aiBubble}`}
-            >
-              {msg.content}
-            </div>
-          ))}
+          {messages.map((msg, i) => {
+            if (msg.type === "medicine") {
+              return (
+                <div key={i} className={`${styles.bubble} ${styles.aiBubble} ${styles.medicineBubbleWrap}`}>
+                  <MedicineBubble data={msg.data} />
+                </div>
+              );
+            }
+            return (
+              <div
+                key={i}
+                className={`${styles.bubble} ${msg.role === "user" ? styles.userBubble : styles.aiBubble}`}
+              >
+                {msg.content}
+              </div>
+            );
+          })}
 
           {loading && (
             <div className={`${styles.bubble} ${styles.aiBubble} ${styles.typing}`}>
