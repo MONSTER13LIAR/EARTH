@@ -28,7 +28,17 @@
 
 @keyframes bounce {
   from { transform: translateY(0); }
-  to { transform: translateY(-30px); }
+  to { transform: translateY(-14px); }
+}
+
+@media (max-width: 768px) {
+  .arrowIcon svg {
+    width: 60px;
+    height: 50px;
+  }
+  .label {
+    font-size: 14px;
+  }
 }
 
 .label {

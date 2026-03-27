@@ -1,132 +1,97 @@
-.fab {
+.chatbotBar {
   position: fixed;
-  right: 20px;
   bottom: 20px;
-  width: 64px;
-  height: 64px;
-  border: none;
-  border-radius: 999px;
-  background: #111827;
-  color: #fff;
-  font-weight: 800;
-  font-size: 1.1rem;
-  z-index: 1200;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-}
-
-.panel {
-  position: fixed;
-  right: 20px;
-  bottom: 96px;
-  width: min(92vw, 420px);
-  max-height: 78vh;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.2);
-  z-index: 1200;
-  padding: 14px;
+  left: 24px;
+  right: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 8px 32px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.header span {
-  color: #6b7280;
-  font-size: 0.9rem;
-}
-
-.outputBox {
-  min-height: 150px;
-  max-height: 260px;
-  overflow-y: auto;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: #f9fafb;
-  padding: 12px;
-}
-
-.outputText {
-  margin: 0;
-  white-space: pre-wrap;
-  font-family: inherit;
-  line-height: 1.45;
-  font-size: 0.98rem;
-  color: #111827;
-}
-
-.placeholder,
-.loading {
-  margin: 0;
-  color: #6b7280;
-}
-
-.errorBox {
-  background: #ffe5e5;
-  border: 1px solid #ef4444;
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
+  z-index: 1001;
 }
 
-.errorBox p {
-  margin: 0;
-  color: #7f1d1d;
-  font-size: 0.9rem;
-}
-
-.errorBox button {
+.micButton {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #0d0f1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
-  background: #ef4444;
-  color: white;
-  border-radius: 8px;
-  min-height: 34px;
-  padding: 0 10px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-.inputRow {
-  display: grid;
-  grid-template-columns: 64px 1fr 72px;
-  gap: 8px;
+.micIcon {
+  width: 24px;
+  height: 24px;
+  fill: #ffffff;
 }
-
-.micButton,
-.sendButton {
-  min-height: 48px;
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.micButton { background: #1d4ed8; }
-.recording { background: #dc2626; }
-.sendButton { background: #111827; }
 
 .chatInput {
-  min-height: 48px;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  padding: 0 12px;
+  flex-grow: 1;
+  min-width: 0;
+  height: 48px;
+  border-radius: 30px;
+  border: 1px solid #dddddd;
+  padding: 0 20px;
+  font-size: 16px;
   outline: none;
+  background-color: #f9f9f9;
 }
 
-.authHint {
-  margin: 0;
-  padding: 8px 10px;
-  background: #fff7ed;
-  border: 1px solid #fdba74;
-  color: #9a3412;
-  border-radius: 10px;
-  font-size: 0.88rem;
+.chatInput::placeholder {
+  color: #888888;
+}
+
+.sendButton {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #0d0f1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sendIcon {
+  width: 24px;
+  height: 24px;
+  fill: #ffffff;
+  transform: translateX(2px); /* Slight adjustment for visual centering of paperplane */
+}
+
+@media (max-width: 480px) {
+  .chatbotBar {
+    padding: 6px 10px;
+    gap: 8px;
+    left: 10px;
+    right: 10px;
+    bottom: 14px;
+  }
+  .micButton,
+  .sendButton {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+  .micIcon,
+  .sendIcon {
+    width: 18px;
+    height: 18px;
+  }
+  .chatInput {
+    height: 38px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
 }

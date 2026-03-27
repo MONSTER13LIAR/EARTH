@@ -1,8 +1,8 @@
 .pageContainer {
-  background-color: #ffffff;
+  background-color: #0a0b1a;
   min-height: 100vh;
   width: 100%;
-  padding: 180px 24px 60px;
+  padding: 120px 24px 60px; /* Adjusted to give 60px clearance if navbar is ~60px */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,71 +11,78 @@
 .cardContainer {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
   width: 100%;
   align-items: center;
 }
 
 .card {
   width: 100%;
-  max-width: 600px;
-  min-height: 160px;
+  max-width: 680px;
+  min-height: 200px;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  box-shadow: 
+    0 0 20px rgba(124, 58, 237, 0.5),
+    0 0 60px rgba(124, 58, 237, 0.25),
+    0 8px 32px rgba(0, 0, 0, 0.4);
   text-decoration: none;
   border: none;
   cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 0 30px rgba(124, 58, 237, 0.8),
+    0 0 80px rgba(124, 58, 237, 0.4),
+    0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.card:hover .cardName {
+  font-size: 30px;
 }
 
 .cardName {
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  transition: font-size 0.3s ease;
 }
 
 .cardDesc {
-  font-size: 1.1rem;
+  font-size: 14px;
   font-weight: 400;
   color: #ffffff;
   opacity: 0.95;
+  line-height: 1.4;
 }
 
-.comingSoon {
-  margin-top: 8px;
-  color: #fef3c7;
-  font-weight: 700;
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 80px 16px 40px;
+  }
+  .card {
+    padding: 28px 20px;
+  }
 }
 
-.backButton {
-  position: fixed;
-  z-index: 1100;
-  top: 96px;
-  left: 16px;
-  border: none;
-  border-radius: 12px;
-  background: #111827;
-  color: #fff;
-  min-height: 48px;
-  padding: 0 14px;
-  cursor: pointer;
-}
-
-.lockedCard {
-  width: 100%;
-  max-width: 620px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 12px 26px rgba(0,0,0,0.08);
-  text-align: center;
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 64px 12px 32px;
+  }
+  .card {
+    padding: 24px 16px;
+  }
+  .cardName {
+    font-size: 20px;
+  }
 }

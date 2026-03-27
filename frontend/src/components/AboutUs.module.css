@@ -1,12 +1,12 @@
 .pageContainer {
-  background-color: #ffffff;
+  background-color: #000000;
   min-height: 100vh;
   width: 100%;
   padding: 160px 24px 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #1a1a1a;
+  color: #ffffff;
 }
 
 .section {
@@ -20,12 +20,12 @@
   font-size: 4rem;
   font-weight: 800;
   margin-bottom: 16px;
-  color: #0d0f1f;
+  color: #ffffff;
 }
 
 .heroSubtitle {
   font-size: 1.5rem;
-  color: #666;
+  color: #cccccc;
   max-width: 700px;
   margin: 0 auto;
 }
@@ -34,67 +34,93 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 32px;
-  color: #0d0f1f;
+  color: #ffffff;
 }
 
 .missionText {
   font-size: 1.25rem;
   line-height: 1.6;
-  color: #444;
+  color: #e0e0e0;
   max-width: 800px;
   margin: 0 auto;
 }
 
-.problemGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  margin-top: 40px;
-}
-
-.statCard {
-  padding: 32px;
-  border-radius: 20px;
-  color: #ffffff;
-  text-align: left;
+.problemList {
   display: flex;
-  align-items: center;
-  font-size: 1.1rem;
-  font-weight: 600;
-  line-height: 1.4;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.red { background-color: #E53935; }
-.blue { background-color: #1E88E5; }
-.green { background-color: #43A047; }
-.amber { background-color: #FB8C00; }
+.problemCard {
+  background-color: #111122;
+  border: 0.5px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: left;
+}
+
+.problemToolName {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.divider {
+  height: 1px;
+  background-color: rgba(124, 58, 237, 0.2);
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.problemItems {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.problemItem {
+  font-size: 13px;
+  color: #aaaaaa;
+  line-height: 1.8;
+}
 
 .toolsRow {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
 .toolCard {
   flex: 1;
-  min-width: 200px;
-  padding: 24px;
+  min-width: 220px;
+  background-color: #111122;
+  padding: 32px 24px;
   border-radius: 16px;
   color: #ffffff;
   text-align: center;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.2);
+  border: 0.5px solid rgba(124, 58, 237, 0.3);
 }
 
 .toolName {
   font-weight: 800;
-  font-size: 1.2rem;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  color: #ffffff;
 }
 
 .toolDesc {
-  font-size: 0.9rem;
-  opacity: 0.9;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e0e0e0;
 }
 
 .sdgContainer {
@@ -107,11 +133,11 @@
 .sdgBadge {
   padding: 10px 20px;
   border-radius: 50px;
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: #1a1a2e;
+  color: #ffffff;
   font-weight: 600;
   font-size: 0.9rem;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(124, 58, 237, 0.3);
 }
 
 .teamRow {
@@ -122,11 +148,12 @@
 }
 
 .teamCard {
-  background-color: #f9f9f9;
+  background-color: #111122;
   padding: 32px;
   border-radius: 24px;
-  border: 1px solid #eee;
+  border: 1px solid rgba(124, 58, 237, 0.3);
   min-width: 250px;
+  color: #ffffff;
 }
 
 .teamName {
@@ -136,26 +163,74 @@
 }
 
 .teamRole {
-  color: #666;
+  color: #cccccc;
   font-weight: 500;
 }
 
 .hackathonText {
   font-size: 1rem;
-  color: #888;
+  color: #888888;
   font-style: italic;
   margin-top: 16px;
 }
 
 @media (max-width: 768px) {
-  .problemGrid {
-    grid-template-columns: 1fr;
+  .pageContainer {
+    padding: 100px 16px 60px;
+  }
+  .section {
+    margin-bottom: 48px;
+  }
+  .heroHeading {
+    font-size: 2.5rem;
+  }
+  .heroSubtitle {
+    font-size: 1.1rem;
+  }
+  .sectionHeading {
+    font-size: 1.75rem;
+  }
+  .missionText {
+    font-size: 1.05rem;
+  }
+  .toolCard {
+    min-width: 140px;
   }
   .teamRow {
     flex-direction: column;
     align-items: center;
   }
+  .teamCard {
+    min-width: unset;
+    width: 100%;
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 80px 12px 40px;
+  }
   .heroHeading {
-    font-size: 2.5rem;
+    font-size: 1.9rem;
+  }
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+  .sectionHeading {
+    font-size: 1.4rem;
+  }
+  .missionText {
+    font-size: 0.95rem;
+  }
+  .toolsRow {
+    gap: 12px;
+  }
+  .toolCard {
+    min-width: unset;
+    width: 100%;
+  }
+  .problemCard {
+    padding: 16px;
   }
 }
