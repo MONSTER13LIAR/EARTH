@@ -18,7 +18,11 @@ import SchemeFinder from './features/pustak-dost/SchemeFinder'
 import KisanRath from './features/kisan-rath/KisanRath'
 import CropDiseaseDetector from './features/kisan-rath/CropDiseaseDetector'
 import LoanReader from './features/kisan-rath/LoanReader'
+import FarmingSchemes from './features/kisan-rath/FarmingSchemes'
 import Shakti from './features/shakti/Shakti'
+import WomensRights from './features/shakti/WomensRights'
+import WomensSchemes from './features/shakti/WomensSchemes'
+import WomensHealth from './features/shakti/WomensHealth'
 import SymptomChecker from './features/swasth-raho/SymptomChecker'
 import DoctorExplainer from './features/swasth-raho/DoctorExplainer'
 import SignInModal from './components/SignInModal'
@@ -68,8 +72,16 @@ export default function App() {
         return <CropDiseaseDetector setView={setView} />
       case 'loan-reader':
         return <LoanReader setView={setView} />
+      case 'farming-schemes':
+        return <FarmingSchemes setView={setView} />
       case 'shakti':
         return <Shakti setView={setView} />
+      case 'womens-rights':
+        return <WomensRights setView={setView} />
+      case 'womens-schemes':
+        return <WomensSchemes setView={setView} />
+      case 'womens-health':
+        return <WomensHealth setView={setView} />
       case 'swasth-raho':
         return <SwasthRaho setView={setView} onOcrFile={(file) => { setPendingOcrFile(file); setView('chatbot') }} />
       case 'symptom-checker':

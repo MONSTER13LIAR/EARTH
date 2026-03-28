@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { analyseSymptoms } from '../../services/featherless'
+import { logToolActivity } from '../../services/api'
 import styles from './SymptomChecker.module.css'
 
 // ── Body parts definition ──────────────────────────────────
@@ -118,6 +119,11 @@ export default function SymptomChecker({ setView }) {
     try {
       const res = await analyseSymptoms({ bodyPart: selectedLabel, type, description, imageFile: photo })
       setResult(res)
+      logToolActivity(
+        'symptom-checker',
+        `${selectedLabel}: ${description.slice(0, 100)}`,
+        `${res.conditions?.[0] || 'Unknown'} — ${res.verdict}`
+      )
     } catch (err) {
       setError(err.message || 'Something went wrong')
     } finally {

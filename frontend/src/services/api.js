@@ -217,6 +217,21 @@ export async function sendChatMessage(message, history = []) {
   return parseResponse(response);
 }
 
+/** Silently log a tool usage to history. Never throws — fails quietly if not signed in. */
+export async function logToolActivity(feature, inputSummary, outputSummary) {
+  const token = getAuthToken();
+  if (!token) return;
+  try {
+    await fetch(`${API_BASE_URL}/api/history/activity`, {
+      method: "POST",
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ feature, inputSummary, outputSummary }),
+    });
+  } catch {
+    // silent — logging failure should never break the tool
+  }
+}
+
 export async function getPromptSamples() {
   ensureTokenPresent();
 

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { extractTextFromImage } from '../../hooks/useOCR'
 import { analyseLoanDocument } from '../../services/featherless'
+import { logToolActivity } from '../../services/api'
 import styles from './LoanReader.module.css'
 
 const VERDICT_CONFIG = {
@@ -34,6 +35,11 @@ export default function LoanReader({ setView }) {
       const data = await analyseLoanDocument(text)
       setResult(data)
       setStep('result')
+      logToolActivity(
+        'loan-reader',
+        'Loan document uploaded',
+        `Verdict: ${data.verdict}${data.summary ? ' | ' + data.summary.slice(0, 100) : ''}`
+      )
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.')
       setStep('upload')

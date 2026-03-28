@@ -3,11 +3,18 @@ import { fetchMyHistory } from '../services/api'
 import styles from './History.module.css'
 
 const FEATURE_META = {
-  'medicine-label-reader': { label: 'Dawa Sunaao',    color: '#E53935' },
-  'symptom-checker':       { label: 'Swasth Raho',    color: '#8E24AA' },
-  'doctor-visit-explainer':{ label: 'Doctor Visit',   color: '#00897B' },
-  'doctor-or-home-decision':{ label: 'Doctor Visit',  color: '#00897B' },
-  'chat':                  { label: 'EARTH Chat',     color: '#1E88E5' },
+  'medicine-label-reader':  { label: 'Medicine Label',    color: '#E53935' },
+  'symptom-checker':        { label: 'Symptom Check',     color: '#8E24AA' },
+  'doctor-visit-explainer': { label: 'Doctor Visit',      color: '#00897B' },
+  'doctor-explainer':       { label: 'Doctor Visit',      color: '#00897B' },
+  'doctor-or-home-decision':{ label: 'Doctor Decision',   color: '#00897B' },
+  'chat':                   { label: 'EARTH Chat',        color: '#1E88E5' },
+  'crop-disease':           { label: 'Crop Disease',      color: '#558B2F' },
+  'loan-reader':            { label: 'Loan Reader',       color: '#F57F17' },
+  'farming-schemes':        { label: 'Farming Schemes',   color: '#2E7D32' },
+  'textbook-simplifier':    { label: 'Textbook Helper',   color: '#1565C0' },
+  'career-roadmap':         { label: 'Career Roadmap',    color: '#6A1B9A' },
+  'scheme-finder':          { label: 'Scheme Finder',     color: '#0277BD' },
 }
 
 function featureMeta(feature) {

@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { explainDoctorVisit } from '../../services/featherless'
+import { logToolActivity } from '../../services/api'
 import styles from './DoctorExplainer.module.css'
 
 export default function DoctorExplainer({ setView }) {
@@ -47,6 +48,11 @@ export default function DoctorExplainer({ setView }) {
     try {
       const res = await explainDoctorVisit(memory)
       setResult(res)
+      logToolActivity(
+        'doctor-explainer',
+        memory.slice(0, 150),
+        res.summary ? res.summary.slice(0, 200) : 'Doctor visit explained'
+      )
     } catch (err) {
       setError(err.message || 'Something went wrong')
     } finally {

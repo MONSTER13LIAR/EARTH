@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { detectCropDisease } from '../../services/featherless'
+import { logToolActivity } from '../../services/api'
 import styles from './CropDiseaseDetector.module.css'
 
 const SEVERITY_CONFIG = {
@@ -49,6 +50,11 @@ export default function CropDiseaseDetector({ setView }) {
     try {
       const data = await detectCropDisease(selectedFile, cropName, soilType)
       setResult(data)
+      logToolActivity(
+        'crop-disease',
+        cropName ? `Crop: ${cropName}` : 'Unknown crop',
+        `${data.disease} — ${data.severity}${data.cause ? ' | ' + data.cause.slice(0, 80) : ''}`
+      )
       // Auto-speak disease + cause
       const spokenText = [
         data.disease !== 'Healthy'

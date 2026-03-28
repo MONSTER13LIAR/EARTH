@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { extractTextFromImage } from '../../hooks/useOCR'
 import { explainTextbook } from '../../services/featherless'
+import { logToolActivity } from '../../services/api'
 import styles from './TextbookSimplifier.module.css'
 
 function isHindiText(text) {
@@ -38,6 +39,11 @@ export default function TextbookSimplifier({ setView }) {
     try {
       const result = await explainTextbook(text, lang)
       setExplanation(result)
+      logToolActivity(
+        'textbook-simplifier',
+        text.slice(0, 120),
+        result.slice(0, 200)
+      )
       setStep('result')
       speak(result, lang, () => setSpeaking(false))
       setSpeaking(true)

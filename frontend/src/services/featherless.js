@@ -323,6 +323,64 @@ If the crop looks healthy, set disease to "Healthy", severity to "Healthy", and 
 }
 
 /**
+ * Advise a woman on her legal rights under Indian law based on her situation.
+ * Returns { laws, steps, helplines, urgent }
+ */
+export async function findWomensRights(situation) {
+  const lang = localStorage.getItem('earth_language') || 'en'
+  const isHindi = lang === 'hi'
+  const langLine = isHindi
+    ? 'Respond ONLY in simple Hindi (हिंदी में जवाब दें). बहुत सरल और सहानुभूतिपूर्ण भाषा में।'
+    : 'Respond in simple, compassionate English.'
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a compassionate legal advisor helping women in India understand their rights. ${langLine}
+
+The woman will describe her situation. Based on Indian law, tell her exactly what legal protections apply and what concrete steps she can take.
+
+Return ONLY valid JSON, no markdown:
+{
+  "summary": "1-2 sentence compassionate acknowledgement of her situation and what the law says about it",
+  "laws": [
+    {
+      "name": "Name of the Indian law / act / section",
+      "protection": "What this law protects her from or gives her the right to do — in 1-2 simple sentences"
+    }
+  ],
+  "steps": [
+    "Concrete step she can take right now — be specific (e.g. file an FIR at local police station under Section X)"
+  ],
+  "helplines": [
+    { "name": "Helpline name", "number": "Phone number" }
+  ],
+  "urgent": true or false
+}
+
+Rules:
+- Only cite real, currently active Indian laws (IPC, BNS 2023, POCSO, DV Act, Dowry Act, etc.).
+- steps must be 3-6 practical, actionable steps she can actually do.
+- Always include at least: Women Helpline 181, Police 100, NCW helpline.
+- urgent = true if her situation involves physical danger, threat to life, or active abuse.
+- Be warm and non-judgmental. She may be scared.`,
+    },
+    {
+      role: 'user',
+      content: `My situation: ${situation}`,
+    },
+  ]
+
+  const reply = await featherlessChat(messages, { max_tokens: 1000, temperature: 0.2 })
+  const clean = reply.replace(/```json|```/g, '').trim()
+  try {
+    return JSON.parse(clean)
+  } catch {
+    return { summary: reply, laws: [], steps: [], helplines: [], urgent: false }
+  }
+}
+
+/**
  * Find current Indian government schemes relevant to a career/field.
  * Returns array of { name, benefit, how_to_apply, link_hint }
  */
@@ -478,6 +536,176 @@ Return ONLY valid JSON, no markdown:
     return JSON.parse(clean)
   } catch {
     return { overview: reply, steps: [], courses: [], timeline: '', salary: '', good_fit: true, fit_note: '' }
+  }
+}
+
+/**
+ * Give women's health advice based on described problem.
+ * Returns { summary, home_care, when_to_see_doctor, warning_signs, urgent }
+ */
+export async function getWomensHealthAdvice(problem) {
+  const lang = localStorage.getItem('earth_language') || 'en'
+  const isHindi = lang === 'hi'
+  const langLine = isHindi
+    ? 'Respond ONLY in simple Hindi (हिंदी में जवाब दें). बहुत सरल और सहानुभूतिपूर्ण भाषा में।'
+    : 'Respond in simple, warm, non-judgmental English.'
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a compassionate women's health advisor helping rural Indian women. ${langLine}
+
+The woman will describe her health problem. Give her clear, practical, private advice.
+
+Return ONLY valid JSON, no markdown:
+{
+  "summary": "2-3 sentence plain-language explanation of what might be causing this and what it means",
+  "home_care": ["Practical home remedy or step 1", "step 2", "step 3", "step 4"],
+  "when_to_see_doctor": "One clear sentence about when she should visit a doctor or ASHA/ANM worker",
+  "warning_signs": ["Sign that means she must go to a doctor immediately 1", "sign 2", "sign 3"],
+  "urgent": true or false
+}
+
+Rules:
+- Be warm, non-judgmental, and private. Many women are too embarrassed to ask anyone else.
+- Cover all women's health topics: menstrual problems, pregnancy, white discharge, pain, nutrition, skin, mental health, etc.
+- home_care should be practical steps she can do at home — rest, diet, local remedies, OTC medicines if appropriate.
+- urgent = true if symptoms suggest something that needs immediate medical attention.
+- Never shame or judge the woman for her problem.`,
+    },
+    {
+      role: 'user',
+      content: `My health problem: ${problem}`,
+    },
+  ]
+
+  const reply = await featherlessChat(messages, { max_tokens: 800, temperature: 0.2 })
+  const clean = reply.replace(/```json|```/g, '').trim()
+  try {
+    return JSON.parse(clean)
+  } catch {
+    return { summary: reply, home_care: [], when_to_see_doctor: '', warning_signs: [], urgent: false }
+  }
+}
+
+/**
+ * Find scholarships and schemes for women based on qualification and course.
+ * Returns { scholarships: [...], schemes: [...] }
+ */
+export async function findWomensScholarships({ qualification, currentClass, course }) {
+  const lang = localStorage.getItem('earth_language') || 'en'
+  const isHindi = lang === 'hi'
+  const langLine = isHindi
+    ? 'Respond ONLY in simple Hindi (हिंदी में जवाब दें). बहुत सरल भाषा में।'
+    : 'Respond in simple English.'
+
+  const profile = [
+    currentClass ? `Current class / studying: ${currentClass}` : null,
+    qualification ? `Highest qualification: ${qualification}` : null,
+    course ? `Interested in course: ${course}` : null,
+  ].filter(Boolean).join('\n')
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are an expert on Indian government scholarships and schemes for women. ${langLine}
+
+Based on the woman's educational profile, find all currently active scholarships and government schemes she is eligible for.
+
+Return ONLY valid JSON, no markdown:
+{
+  "scholarships": [
+    {
+      "name": "Scholarship name",
+      "by": "Organisation or ministry offering it",
+      "benefit": "Amount or benefit — e.g. ₹25,000/year tuition fee waiver",
+      "eligibility": "Who can apply in one short line",
+      "how_to_apply": "Website or portal name to apply"
+    }
+  ],
+  "schemes": [
+    {
+      "name": "Scheme name",
+      "benefit": "What she gets in 1-2 sentences",
+      "eligibility": "Eligibility in one short line",
+      "how_to_apply": "Website or office to contact"
+    }
+  ]
+}
+
+Rules:
+- Only list real, currently active scholarships/schemes for women in India.
+- Include both central government and state-agnostic schemes.
+- Scholarships should be specific to her class/qualification level and course if provided.
+- Schemes can include Beti Bachao Beti Padhao, PM Scholarship, NSP scholarships, Minority scholarships, state board scholarships, skill development programs, etc.
+- If no course is specified, return general educational scholarships for women at her level.
+- Return 4-6 scholarships and 3-4 schemes.`,
+    },
+    {
+      role: 'user',
+      content: `Student profile:\n${profile}`,
+    },
+  ]
+
+  const reply = await featherlessChat(messages, { max_tokens: 1200, temperature: 0.2 })
+  const clean = reply.replace(/```json|```/g, '').trim()
+  try {
+    return JSON.parse(clean)
+  } catch {
+    return { scholarships: [], schemes: [] }
+  }
+}
+
+/**
+ * Find government schemes for a farmer/rural worker by state and occupation.
+ * Returns { schemes: [...], none: bool }
+ */
+export async function findFarmingSchemes(state, occupation) {
+  const lang = localStorage.getItem('earth_language') || 'en'
+  const isHindi = lang === 'hi'
+  const langLine = isHindi
+    ? 'Respond ONLY in simple Hindi (हिंदी में जवाब दें). बहुत सरल भाषा में।'
+    : 'Respond in simple English.'
+
+  const messages = [
+    {
+      role: 'system',
+      content: `You are an expert on Indian government schemes helping rural citizens. ${langLine}
+
+The user will tell you their state and what they do for a living. Find all currently active government schemes — both central and state-level — that they are eligible for.
+
+Return ONLY valid JSON, no markdown:
+{
+  "schemes": [
+    {
+      "name": "Scheme name",
+      "level": "Central" or "State",
+      "benefit": "What they get — money, subsidy, insurance, training, etc. in 1-2 sentences",
+      "who_can_apply": "Eligibility in one short line",
+      "how_to_apply": "Website name or office to visit"
+    }
+  ]
+}
+
+Rules:
+- Include both central government and ${state} state-specific schemes.
+- Only include schemes that are currently active (not discontinued).
+- If there are no relevant schemes at all, return { "schemes": [] }.
+- Do NOT make up fake schemes. If unsure, skip it.
+- Focus on schemes for the specific occupation given.`,
+    },
+    {
+      role: 'user',
+      content: `State: ${state}\nOccupation / work: ${occupation}`,
+    },
+  ]
+
+  const reply = await featherlessChat(messages, { max_tokens: 1200, temperature: 0.2 })
+  const clean = reply.replace(/```json|```/g, '').trim()
+  try {
+    return JSON.parse(clean)
+  } catch {
+    return { schemes: [] }
   }
 }
 

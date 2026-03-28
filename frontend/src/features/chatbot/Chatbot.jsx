@@ -1,16 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import { chatWithEarth } from "../../services/api";
+import { chatWithEarth, sendChatMessage } from "../../services/api";
 import { analyseMedicineLabelFromImage } from "../../services/featherless";
 import { useSpeechRecognition } from "../../hooks/useSpeechRecognition";
 import styles from "./Chatbot.module.css";
 
-const PAST_CHATS = [
-  "Medicine label query",
-  "Crop disease help",
-  "Government schemes",
-  "Career guidance",
-  "Women's safety laws",
-];
+// ── Session helpers (localStorage) ──────────────────────────
+function getSessionsKey(userId) {
+  return `earth_chats_${userId}`;
+}
+function loadSessions(userId) {
+  try { return JSON.parse(localStorage.getItem(getSessionsKey(userId)) || "[]"); }
+  catch { return []; }
+}
+function persistSessions(userId, sessions) {
+  localStorage.setItem(getSessionsKey(userId), JSON.stringify(sessions));
+}
+function makeSessionTitle(text) {
+  return text.length > 42 ? text.slice(0, 42) + "…" : text;
+}
+function formatSessionTime(isoStr) {
+  const d = new Date(isoStr);
+  const now = new Date();
+  const diffDays = Math.floor((now - d) / 86400000);
+  if (diffDays === 0) return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  if (diffDays === 1) return "Yesterday";
+  return `${diffDays}d ago`;
+}
 
 function MedicineBubble({ data }) {
   return (
@@ -41,36 +56,77 @@ export default function Chatbot({ ocrFile, onOcrFileClear, user, onSignInClick }
   const [error, setError] = useState("");
   const [toast, setToast] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [sessions, setSessions] = useState([]);
+  const [currentSessionId, setCurrentSessionId] = useState(null);
   const bottomRef = useRef(null);
   const processedRef = useRef(false);
+  const currentSessionIdRef = useRef(null);
+
+  // keep ref in sync for use inside closures
+  useEffect(() => { currentSessionIdRef.current = currentSessionId; }, [currentSessionId]);
+
+  // Load sessions from localStorage when user signs in
+  useEffect(() => {
+    if (user) {
+      const saved = loadSessions(user.id || user._id);
+      setSessions(saved);
+    } else {
+      setSessions([]);
+      setCurrentSessionId(null);
+    }
+  }, [user]);
 
   const showToast = () => {
     setToast(true);
     setTimeout(() => setToast(false), 3000);
   };
 
-  // ── OCR → Featherless → Web Speech ──────────────────────
+  // ── Save / update session in localStorage ───────────────
+  function upsertSession(userId, sessionId, msgs, title) {
+    setSessions(prev => {
+      const existing = prev.find(s => s.id === sessionId);
+      let next;
+      if (existing) {
+        next = prev.map(s => s.id === sessionId ? { ...s, messages: msgs, updatedAt: new Date().toISOString() } : s);
+      } else {
+        const newSession = { id: sessionId, title, messages: msgs, updatedAt: new Date().toISOString() };
+        next = [newSession, ...prev];
+      }
+      persistSessions(userId, next);
+      return next;
+    });
+  }
+
+  // ── Load a past session ──────────────────────────────────
+  function loadSession(session) {
+    setMessages(session.messages);
+    setCurrentSessionId(session.id);
+    setError("");
+  }
+
+  // ── Start new chat ───────────────────────────────────────
+  function handleNewChat() {
+    setMessages([]);
+    setCurrentSessionId(null);
+    setError("");
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+  }
+
+  // ── OCR → Featherless ────────────────────────────────────
   useEffect(() => {
     if (!ocrFile || processedRef.current) return;
     processedRef.current = true;
 
     const run = async () => {
-      // user message
       setMessages([{ role: "user", content: "📷 Medicine label image uploaded — reading with AI vision..." }]);
       setLoading(true);
       onOcrFileClear?.();
 
       try {
-        // Vision model reads the image directly — no Tesseract needed
         const data = await analyseMedicineLabelFromImage(ocrFile);
+        setMessages((prev) => [...prev, { role: "assistant", type: "medicine", data }]);
 
-        // Step 3: push medicine result bubble
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", type: "medicine", data },
-        ]);
-
-        // Step 4: Web Speech
         if (data.explanation) {
           const lang = localStorage.getItem("earth_language") || "en";
           const isHindi = lang === "hi";
@@ -87,10 +143,7 @@ export default function Chatbot({ ocrFile, onOcrFileClear, user, onSignInClick }
           window.speechSynthesis.speak(utt);
         }
       } catch (err) {
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: err.message || "Something went wrong reading the label." },
-        ]);
+        setMessages((prev) => [...prev, { role: "assistant", content: err.message || "Something went wrong reading the label." }]);
       } finally {
         setLoading(false);
       }
@@ -99,19 +152,46 @@ export default function Chatbot({ ocrFile, onOcrFileClear, user, onSignInClick }
     run();
   }, [ocrFile]);
 
-  // ── Regular chat ────────────────────────────────────────
+  // ── Regular chat ─────────────────────────────────────────
   const handleSend = async (text) => {
     const trimmed = (text ?? input).trim();
     if (!trimmed || loading) return;
 
-    setMessages((prev) => [...prev, { role: "user", content: trimmed }]);
+    const updatedMessages = [...messages, { role: "user", content: trimmed }];
+    setMessages(updatedMessages);
     setInput("");
     setError("");
     setLoading(true);
 
+    // Create session on first message if signed in
+    const userId = user?.id || user?._id;
+    let sessionId = currentSessionIdRef.current;
+    let sessionTitle = null;
+
+    if (user && !sessionId) {
+      sessionId = `sess_${Date.now()}`;
+      sessionTitle = makeSessionTitle(trimmed);
+      setCurrentSessionId(sessionId);
+    }
+
     try {
-      const data = await chatWithEarth(trimmed);
-      setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+      let reply;
+      if (user) {
+        const history = messages.map(m => ({ role: m.role, content: m.content || "" }));
+        const data = await sendChatMessage(trimmed, history);
+        reply = data.reply;
+      } else {
+        const data = await chatWithEarth(trimmed);
+        reply = data.reply;
+      }
+
+      const finalMessages = [...updatedMessages, { role: "assistant", content: reply }];
+      setMessages(finalMessages);
+
+      // Save to localStorage
+      if (user && sessionId) {
+        upsertSession(userId, sessionId, finalMessages, sessionTitle || makeSessionTitle(trimmed));
+      }
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -176,14 +256,47 @@ export default function Chatbot({ ocrFile, onOcrFileClear, user, onSignInClick }
 
       {/* LEFT PANEL */}
       <aside className={styles.leftPanel}>
-        <div className={styles.leftContent}>
-          <p className={styles.pastChatsHeading}>Past Chats</p>
-          <ul className={styles.pastChatList}>
-            {PAST_CHATS.map((label) => (
-              <li key={label} className={styles.pastChatItem}>{label}</li>
-            ))}
-          </ul>
+        <div className={`${styles.leftContent} ${user ? styles.leftContentUnlocked : ""}`}>
+          {user ? (
+            <>
+              <button className={styles.newChatBtn} onClick={handleNewChat}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                New Chat
+              </button>
+
+              <p className={styles.pastChatsHeading}>Past Chats</p>
+
+              {sessions.length === 0 ? (
+                <p className={styles.noSessions}>No past chats yet. Start a conversation!</p>
+              ) : (
+                <ul className={styles.pastChatList}>
+                  {sessions.map((s) => (
+                    <li
+                      key={s.id}
+                      className={`${styles.pastChatItem} ${s.id === currentSessionId ? styles.pastChatItemActive : ""}`}
+                      onClick={() => loadSession(s)}
+                    >
+                      <span className={styles.sessionTitle}>{s.title}</span>
+                      <span className={styles.sessionTime}>{formatSessionTime(s.updatedAt)}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          ) : (
+            <>
+              <p className={styles.pastChatsHeading}>Past Chats</p>
+              <ul className={styles.pastChatList}>
+                {["Medicine label query", "Crop disease help", "Government schemes", "Career guidance", "Women's safety laws"].map((label) => (
+                  <li key={label} className={styles.pastChatItem}>{label}</li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
+
         {!user && (
           <div className={styles.lockedOverlay}>
             <svg className={styles.lockIcon} viewBox="0 0 24 24">
@@ -193,6 +306,7 @@ export default function Chatbot({ ocrFile, onOcrFileClear, user, onSignInClick }
             <button className={styles.signInBtn} onClick={onSignInClick}>Sign In</button>
           </div>
         )}
+
         {user && (
           <div className={styles.userInfo}>
             <p className={styles.userName}>{user.name}</p>

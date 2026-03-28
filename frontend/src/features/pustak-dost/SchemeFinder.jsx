@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { findGovernmentSchemes } from '../../services/featherless'
+import { logToolActivity } from '../../services/api'
 import styles from './SchemeFinder.module.css'
 
 export default function SchemeFinder({ setView }) {
@@ -22,6 +23,13 @@ export default function SchemeFinder({ setView }) {
       const result = await findGovernmentSchemes(trimmed)
       setSchemes(result.schemes || [])
       setJobs(result.jobs || [])
+      logToolActivity(
+        'scheme-finder',
+        `Career: ${trimmed}`,
+        result.schemes?.length > 0
+          ? `${result.schemes.length} schemes: ${result.schemes.slice(0, 2).map(s => s.name).join(', ')}`
+          : 'No schemes found'
+      )
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.')
     } finally {

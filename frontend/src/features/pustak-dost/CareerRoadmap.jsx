@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { suggestCareerPaths, generateCareerRoadmap } from '../../services/featherless'
+import { logToolActivity } from '../../services/api'
 import styles from './CareerRoadmap.module.css'
 
 const GRADES_YOUNG = ['LKG','UKG','1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th']
@@ -70,6 +71,11 @@ export default function CareerRoadmap({ setView }) {
       const result = await generateCareerRoadmap({ career: career.title, grade, marks10, marks12, certificates, certificateDetails })
       setRoadmap(result)
       setStep('roadmap')
+      logToolActivity(
+        'career-roadmap',
+        `${career.title} (Grade ${grade})`,
+        result.overview ? result.overview.slice(0, 200) : `Career roadmap for ${career.title}`
+      )
       if (result.overview) {
         speakText(result.overview, () => setSpeaking(false))
         setSpeaking(true)
