@@ -12,16 +12,19 @@ export default function Tools({ setView }) {
       name: "Pustak Dost",
       description: "Your education and career guide — simplify textbooks, get a career roadmap, find jobs and government skill schemes",
       color: "#1E88E5",
+      view: "pustak-dost",
     },
     {
       name: "Kisan Rath",
       description: "Your complete farming companion — detect crop disease, understand loan documents, find government schemes and scale your farm",
       color: "#43A047",
+      view: "kisan-rath",
     },
     {
       name: "Shakti",
       description: "Women's safety and empowerment — know your rights, report abuse safely, find scholarships and health guidance privately",
       color: "#7C3AED",
+      view: "shakti",
     },
   ]
 

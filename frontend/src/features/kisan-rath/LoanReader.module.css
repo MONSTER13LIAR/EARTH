@@ -1,0 +1,283 @@
+.page {
+  background: #07081a;
+  min-height: 100vh;
+  width: 100%;
+  padding: 180px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.page::before {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(67,160,71,0.18) 0%, rgba(27,94,32,0.1) 50%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.backBtn {
+  position: absolute;
+  top: 155px;
+  left: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 14px 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+}
+.backBtn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-color: rgba(102,187,106,0.5);
+  box-shadow: 0 0 12px rgba(102,187,106,0.3);
+}
+
+/* ── HEADER ─────────────────────── */
+.header {
+  text-align: center;
+  margin-bottom: 36px;
+  z-index: 1;
+}
+.title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #a5d6a7 0%, #66bb6a 40%, #43a047 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  margin: 0 0 10px;
+}
+.subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.45);
+  margin: 0;
+}
+
+/* ── UPLOAD ─────────────────────── */
+.error {
+  font-size: 0.9rem;
+  color: #f87171;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  max-width: 540px;
+  text-align: center;
+  z-index: 1;
+}
+
+.uploadBox {
+  width: 100%;
+  max-width: 540px;
+  border: 2px dashed rgba(102,187,106,0.35);
+  border-radius: 20px;
+  padding: 64px 32px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(67,160,71,0.05);
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  z-index: 1;
+}
+.uploadBox:hover {
+  border-color: rgba(102,187,106,0.6);
+  background: rgba(67,160,71,0.09);
+  box-shadow: 0 0 28px rgba(67,160,71,0.12);
+}
+.uploadIcon {
+  font-size: 3.2rem;
+  display: block;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 10px rgba(102,187,106,0.5));
+}
+.uploadText {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  margin: 0 0 8px;
+}
+.uploadSub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
+}
+
+/* ── STATUS ─────────────────────── */
+.statusBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 40px;
+  z-index: 1;
+}
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(102,187,106,0.2);
+  border-top-color: #66bb6a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.statusText {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
+  margin: 0;
+}
+
+/* ── RESULT ─────────────────────── */
+.resultWrap {
+  width: 100%;
+  max-width: 660px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 1;
+  animation: fadeUp 0.3s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Verdict banner */
+.verdictBanner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 22px;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.verdictIcon { font-size: 1.5rem; }
+.verdictSafe      { background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.35); color: #6ee7b7; }
+.verdictRisky     { background: rgba(251,191,36,0.1);  border: 1px solid rgba(251,191,36,0.35); color: #fde68a; }
+.verdictDangerous { background: rgba(239,68,68,0.12);  border: 1px solid rgba(239,68,68,0.4);   color: #fca5a5; }
+
+/* Cards */
+.card {
+  background: linear-gradient(135deg, rgba(7,18,10,0.95) 0%, rgba(10,30,15,0.95) 100%);
+  border: 1px solid rgba(102,187,106,0.22);
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cardLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #66bb6a;
+  margin: 0;
+}
+.cardText {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* Key terms */
+.termList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.termRow {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(102,187,106,0.12);
+  border-radius: 10px;
+}
+.termName {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #a5d6a7;
+}
+.termMeaning {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.62);
+  line-height: 1.5;
+}
+
+/* Traps */
+.trapList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.trapCard {
+  background: rgba(239,68,68,0.06);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.trapClause {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.55);
+  font-style: italic;
+  margin: 0;
+  line-height: 1.5;
+}
+.trapWarning {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fca5a5;
+  margin: 0;
+  line-height: 1.5;
+}
+.noTraps {
+  font-size: 0.93rem;
+  color: #6ee7b7;
+  margin: 0;
+}
+
+/* Reset */
+.resetBtn {
+  align-self: center;
+  padding: 12px 28px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.55);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+.resetBtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+@media (max-width: 600px) {
+  .page { padding: 140px 14px 40px; }
+  .backBtn { top: 110px; left: 14px; }
+  .card { padding: 18px 16px; }
+}

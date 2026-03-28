@@ -11,14 +11,26 @@ import AboutUs from './components/AboutUs'
 import ChatbotBar from './components/ChatbotBar'
 import Chatbot from './features/chatbot/Chatbot'
 import SwasthRaho from './features/swasth-raho/SwasthRaho'
+import PustakDost from './features/pustak-dost/PustakDost'
+import TextbookSimplifier from './features/pustak-dost/TextbookSimplifier'
+import CareerRoadmap from './features/pustak-dost/CareerRoadmap'
+import SchemeFinder from './features/pustak-dost/SchemeFinder'
+import KisanRath from './features/kisan-rath/KisanRath'
+import CropDiseaseDetector from './features/kisan-rath/CropDiseaseDetector'
+import LoanReader from './features/kisan-rath/LoanReader'
+import Shakti from './features/shakti/Shakti'
 import SymptomChecker from './features/swasth-raho/SymptomChecker'
 import DoctorExplainer from './features/swasth-raho/DoctorExplainer'
+import SignInModal from './components/SignInModal'
+import { getCurrentUser, clearAuthSession } from './services/api'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
   const [view, setView] = useState('home')
   const [language, setLanguage] = useState(localStorage.getItem('earth_language') || 'en')
   const [pendingOcrFile, setPendingOcrFile] = useState(null)
+  const [user, setUser] = useState(() => getCurrentUser())
+  const [showSignIn, setShowSignIn] = useState(false)
 
   useEffect(() => {
     if (!hasEntered) {
@@ -28,10 +40,36 @@ export default function App() {
     }
   }, [hasEntered])
 
+  const handleSignInSuccess = (userData) => {
+    setUser(userData)
+    setShowSignIn(false)
+  }
+
+  const handleSignOut = () => {
+    clearAuthSession()
+    setUser(null)
+  }
+
   const renderView = () => {
     switch(view) {
       case 'tools':
         return <Tools setView={setView} />
+      case 'pustak-dost':
+        return <PustakDost setView={setView} />
+      case 'textbook-simplifier':
+        return <TextbookSimplifier setView={setView} />
+      case 'career-roadmap':
+        return <CareerRoadmap setView={setView} />
+      case 'scheme-finder':
+        return <SchemeFinder setView={setView} />
+      case 'kisan-rath':
+        return <KisanRath setView={setView} />
+      case 'crop-disease':
+        return <CropDiseaseDetector setView={setView} />
+      case 'loan-reader':
+        return <LoanReader setView={setView} />
+      case 'shakti':
+        return <Shakti setView={setView} />
       case 'swasth-raho':
         return <SwasthRaho setView={setView} onOcrFile={(file) => { setPendingOcrFile(file); setView('chatbot') }} />
       case 'symptom-checker':
@@ -39,11 +77,11 @@ export default function App() {
       case 'doctor-explainer':
         return <DoctorExplainer setView={setView} />
       case 'history':
-        return <History />
+        return <History user={user} onSignInClick={() => setShowSignIn(true)} onSignOut={handleSignOut} />
       case 'about':
         return <AboutUs />
       case 'chatbot':
-        return <Chatbot ocrFile={pendingOcrFile} onOcrFileClear={() => setPendingOcrFile(null)} />
+        return <Chatbot ocrFile={pendingOcrFile} onOcrFileClear={() => setPendingOcrFile(null)} user={user} onSignInClick={() => setShowSignIn(true)} />
       case 'home':
       default:
         return (
@@ -87,6 +125,12 @@ export default function App() {
       {renderView()}
       {view !== 'chatbot' && (
         <ChatbotBar onNavigate={() => setView('chatbot')} />
+      )}
+      {showSignIn && (
+        <SignInModal
+          onSuccess={handleSignInSuccess}
+          onClose={() => setShowSignIn(false)}
+        />
       )}
     </>
   )

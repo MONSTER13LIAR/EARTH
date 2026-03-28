@@ -97,6 +97,29 @@
   background: #2d2d4e;
 }
 
+.userInfo {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.userName {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 2px;
+}
+
+.userEmail {
+  font-size: 11px;
+  color: #888;
+  margin: 0;
+  word-break: break-all;
+}
+
 /* ── RIGHT PANEL ─────────────────────────────────────────── */
 .rightPanel {
   flex: 1;

@@ -108,16 +108,27 @@ export default function AboutUs() {
 
       <section className={styles.section}>
         <h2 className={styles.sectionHeading}>Built By</h2>
+
+        <h3 className={styles.roleHeading}>Frontend</h3>
         <div className={styles.teamRow}>
           <div className={styles.teamCard}>
-            <div className={styles.teamName}>Abhijay(MONSTER LIAR)</div>
+            <div className={styles.teamName}>Abhijay (MONSTER LIAR)</div>
             <div className={styles.teamRole}>Frontend Developer</div>
           </div>
+        </div>
+
+        <h3 className={styles.roleHeading}>Backend</h3>
+        <div className={styles.teamRow}>
           <div className={styles.teamCard}>
-            <div className={styles.teamName}>Dishank</div>
+            <div className={styles.teamName}>Abhijay (MONSTER LIAR)</div>
+            <div className={styles.teamRole}>Backend Developer</div>
+          </div>
+          <div className={styles.teamCard}>
+            <div className={styles.teamName}>Dishank (dishank-sen)</div>
             <div className={styles.teamRole}>Backend Developer</div>
           </div>
         </div>
+
         <p className={styles.hackathonText}>Built for The 2030 AI Challenge 2026</p>
       </section>
     </div>
