@@ -324,6 +324,14 @@ export async function chatbot(req: Request, res: Response): Promise<void> {
     language
   );
 
+  await logActivity(
+    userId,
+    "chat",
+    String(message).slice(0, 220),
+    String(text).slice(0, 220),
+    {}
+  );
+
   res.json({ reply: text });
 }
 
