@@ -1,4 +1,3 @@
-# EARTH\n\n![Logo](./logo.png)
 
 ### [Watch on YouTube](https://youtu.be/fKmbCSz-TNw?si=HE3-jUb1b5VzPD8a)
 
@@ -41,3 +40,5 @@ To scale for a real-world launch, we plan to deploy local **Llama servers** in r
 
 
 
+
+![Logo](./logo.png)
