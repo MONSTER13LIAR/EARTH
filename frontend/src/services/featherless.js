@@ -2,6 +2,20 @@ const FEATHERLESS_BASE = 'https://api.featherless.ai/v1'
 const TEXT_MODEL  = 'Qwen/Qwen2.5-72B-Instruct'
 const VISION_MODEL = 'Qwen/Qwen3-VL-30B-A3B-Instruct'
 
+// --- QUOTA SYSTEM ---
+const MAX_QUOTA = 5;
+function checkQuota() {
+  const used = parseInt(localStorage.getItem('earth_ai_usage') || '0', 10);
+  if (used >= MAX_QUOTA) {
+    throw new Error('API quota reached for this user. (Max 5 attempts allowed)');
+  }
+}
+function incrementQuota() {
+  const used = parseInt(localStorage.getItem('earth_ai_usage') || '0', 10);
+  localStorage.setItem('earth_ai_usage', (used + 1).toString());
+}
+// --------------------
+
 function getKey() {
   return import.meta.env.VITE_FEATHERLESS_API_KEY || ''
 }
@@ -10,6 +24,7 @@ function getKey() {
  * Universal Featherless chat call.
  */
 export async function featherlessChat(messages, opts = {}) {
+  checkQuota();
   const key = getKey()
   if (!key) throw new Error('Featherless API key missing. Set VITE_FEATHERLESS_API_KEY in .env')
 
@@ -32,6 +47,7 @@ export async function featherlessChat(messages, opts = {}) {
     throw new Error(err.error?.message || 'Featherless API error')
   }
 
+  incrementQuota();
   const data = await res.json()
   return data.choices?.[0]?.message?.content?.trim() || ''
 }
@@ -54,6 +70,7 @@ function fileToBase64(file) {
  * Returns { expiry, purpose, price, explanation }
  */
 export async function analyseMedicineLabelFromImage(imageFile) {
+  checkQuota();
   const base64 = await fileToBase64(imageFile)
   const lang = localStorage.getItem('earth_language') || 'en'
   const isHindi = lang === 'hi'
@@ -109,9 +126,10 @@ Return ONLY valid JSON, no markdown, no extra text:
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: { message: res.statusText } }))
-    throw new Error(err.error?.message || 'Vision API error')
+    throw new Error(err.error?.message || (res.statusText.includes('Vision') ? 'Vision API error' : 'API error'))
   }
 
+  incrementQuota();
   const data = await res.json()
   const reply = data.choices?.[0]?.message?.content?.trim() || ''
   const clean = reply.replace(/```json|```/g, '').trim()
@@ -160,6 +178,7 @@ verdict rules:
 
   let reply
   if (type === 'physical' && imageFile) {
+    checkQuota();
     const base64 = await fileToBase64(imageFile)
     const messages = [{
       role: 'user',
@@ -179,6 +198,7 @@ verdict rules:
       const err = await res.json().catch(() => ({ error: { message: res.statusText } }))
       throw new Error(err.error?.message || 'API error')
     }
+    incrementQuota();
     const data = await res.json()
     reply = data.choices?.[0]?.message?.content?.trim() || ''
   } else {
@@ -257,6 +277,7 @@ Return at least 2 key_terms and flag ALL traps found (0 is fine if truly none ex
  * Returns { disease, severity, cause, treatment, prevention, urgent }
  */
 export async function detectCropDisease(imageFile, cropName = '', soilType = '') {
+  checkQuota();
   const base64 = await fileToBase64(imageFile)
   const lang = localStorage.getItem('earth_language') || 'en'
   const isHindi = lang === 'hi'
@@ -309,9 +330,10 @@ If the crop looks healthy, set disease to "Healthy", severity to "Healthy", and 
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: { message: res.statusText } }))
-    throw new Error(err.error?.message || 'Vision API error')
+    throw new Error(err.error?.message || (res.statusText.includes('Vision') ? 'Vision API error' : 'API error'))
   }
 
+  incrementQuota();
   const data = await res.json()
   const reply = data.choices?.[0]?.message?.content?.trim() || ''
   const clean = reply.replace(/```json|```/g, '').trim()
