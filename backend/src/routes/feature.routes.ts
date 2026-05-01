@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  aiProxy,
   chatbot,
   doctorOrHomeDecision,
   doctorVisitExplainer,
@@ -11,6 +12,9 @@ import { requireAuth } from "../middlewares/auth.middleware.js";
 import { requireFields } from "../middlewares/validate.middleware.js";
 
 export const featureRouter = Router();
+
+// Publicly available proxy for AI calls
+featureRouter.post("/ai-proxy", aiProxy);
 
 featureRouter.use(requireAuth);
 featureRouter.get("/prompt-samples", getPromptSamples);

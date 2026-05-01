@@ -335,6 +335,44 @@ export async function chatbot(req: Request, res: Response): Promise<void> {
   res.json({ reply: text });
 }
 
+export async function aiProxy(req: Request, res: Response): Promise<void> {
+  const { messages, opts } = req.body as {
+    messages: any[];
+    opts?: any;
+  };
+
+  if (!env.featherlessApiKey) {
+    throw new HttpError(500, "Featherless API key not configured on server");
+  }
+
+  try {
+    const response = await fetch(`${env.featherlessBaseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${env.featherlessApiKey}`,
+      },
+      body: JSON.stringify({
+        model: opts?.model || env.featherlessModel,
+        messages,
+        temperature: opts?.temperature ?? 0.3,
+        max_tokens: opts?.max_tokens ?? 512,
+      }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ error: { message: response.statusText } }));
+      throw new HttpError(response.status, err.error?.message || "Featherless API error");
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error: any) {
+    if (error instanceof HttpError) throw error;
+    throw new HttpError(500, error.message || "Failed to proxy AI request");
+  }
+}
+
 export function getPromptSamples(_req: Request, res: Response): void {
   res.json(promptTemplates);
 }

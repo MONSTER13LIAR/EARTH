@@ -1,4 +1,4 @@
-const FEATHERLESS_BASE = 'https://api.featherless.ai/v1'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 const TEXT_MODEL  = 'Qwen/Qwen2.5-72B-Instruct'
 const VISION_MODEL = 'Qwen/Qwen3-VL-30B-A3B-Instruct'
 
@@ -16,35 +16,30 @@ function incrementQuota() {
 }
 // --------------------
 
-function getKey() {
-  return import.meta.env.VITE_FEATHERLESS_API_KEY || ''
-}
-
 /**
- * Universal Featherless chat call.
+ * Universal chat call via our SECURE BACKEND PROXY.
  */
 export async function featherlessChat(messages, opts = {}) {
   checkQuota();
-  const key = getKey()
-  if (!key) throw new Error('Featherless API key missing. Set VITE_FEATHERLESS_API_KEY in .env')
 
-  const res = await fetch(`${FEATHERLESS_BASE}/chat/completions`, {
+  const res = await fetch(`${API_BASE_URL}/api/features/ai-proxy`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${key}`,
     },
     body: JSON.stringify({
-      model: opts.model || TEXT_MODEL,
       messages,
-      temperature: opts.temperature ?? 0.3,
-      max_tokens: opts.max_tokens ?? 512,
+      opts: {
+        model: opts.model || TEXT_MODEL,
+        temperature: opts.temperature ?? 0.3,
+        max_tokens: opts.max_tokens ?? 512,
+      }
     }),
   })
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: { message: res.statusText } }))
-    throw new Error(err.error?.message || 'Featherless API error')
+    throw new Error(err.error || err.message || 'AI Proxy error')
   }
 
   incrementQuota();
@@ -107,26 +102,20 @@ Return ONLY valid JSON, no markdown, no extra text:
     },
   ]
 
-  const key = getKey()
-  if (!key) throw new Error('Featherless API key missing.')
-
-  const res = await fetch(`${FEATHERLESS_BASE}/chat/completions`, {
+  const res = await fetch(`${API_BASE_URL}/api/features/ai-proxy`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${key}`,
     },
     body: JSON.stringify({
-      model: VISION_MODEL,
       messages,
-      temperature: 0.2,
-      max_tokens: 500,
+      opts: { model: VISION_MODEL, temperature: 0.2, max_tokens: 500 }
     }),
   })
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: { message: res.statusText } }))
-    throw new Error(err.error?.message || (res.statusText.includes('Vision') ? 'Vision API error' : 'API error'))
+    throw new Error(err.error || err.message || 'Vision Proxy error')
   }
 
   incrementQuota();
@@ -187,16 +176,19 @@ verdict rules:
         { type: 'image_url', image_url: { url: base64 } },
       ],
     }]
-    const key = getKey()
-    if (!key) throw new Error('API key missing')
-    const res = await fetch(`${FEATHERLESS_BASE}/chat/completions`, {
+    
+    const res = await fetch(`${API_BASE_URL}/api/features/ai-proxy`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-      body: JSON.stringify({ model: VISION_MODEL, messages, temperature: 0.2, max_tokens: 600 }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages,
+        opts: { model: VISION_MODEL, temperature: 0.2, max_tokens: 600 }
+      }),
     })
+    
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: { message: res.statusText } }))
-      throw new Error(err.error?.message || 'API error')
+      throw new Error(err.error || err.message || 'API error')
     }
     incrementQuota();
     const data = await res.json()
@@ -221,6 +213,7 @@ verdict rules:
     }
   }
 }
+
 
 /**
  * Analyse a loan/legal document text and flag hidden traps.
