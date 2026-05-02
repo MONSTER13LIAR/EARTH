@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://earth-backend-z0i8.onrender.com";
 const TOKEN_KEY = "earth_jwt_token";
 const USER_KEY = "earth_user";
 

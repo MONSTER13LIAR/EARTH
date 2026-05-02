@@ -12,7 +12,7 @@ export const env = {
   featherlessModel: process.env.FEATHERLESS_MODEL ?? "vicgalle/Roleplay-Llama-3-8B",
   deepgramApiKey: process.env.DEEPGRAM_SECRET ?? "",
   ttsVoice: process.env.TTS_VOICE ?? "alloy",
-  frontendOrigin: process.env.FRONTEND_ORIGIN ?? "http://localhost:5173",
+  frontendOrigin: process.env.FRONTEND_ORIGIN ?? "*",
   medicineDuplicateWindowHours: Number(process.env.MEDICINE_DUPLICATE_WINDOW_HOURS ?? 6),
   aiRateLimitPerMinute: Number(process.env.AI_RATE_LIMIT_PER_MINUTE ?? 30),
 };
