@@ -3,11 +3,13 @@ import { connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
 
 async function bootstrap(): Promise<void> {
-  await connectDB();
-
   app.listen(env.port, () => {
     // eslint-disable-next-line no-console
     console.log(`EARTH backend listening on port ${env.port}`);
+  });
+
+  connectDB().catch((err) => {
+    console.error("Delayed MongoDB connection failed:", err);
   });
 }
 
