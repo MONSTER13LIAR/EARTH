@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://earth-backend-z0i8.onrender.com";
 const TEXT_MODEL  = 'Qwen/Qwen2.5-72B-Instruct'
 const VISION_MODEL = 'Qwen/Qwen3-VL-30B-A3B-Instruct'
 
