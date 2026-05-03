@@ -3,7 +3,6 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Marquee from './components/Marquee'
 import Cards from './components/Cards'
-import WelcomeGuide from './components/WelcomeGuide'
 import EntryOverlay from './components/EntryOverlay'
 import Tools from './components/Tools'
 import History from './components/History'
@@ -124,15 +123,20 @@ export default function App() {
               }}>The Problems</h2>
             </div>
             <Cards />
-            {hasEntered && <WelcomeGuide language={language} />}
           </>
         )
     }
   }
 
+  const enterApp = (lang) => {
+    setLanguage(lang)
+    setHasEntered(true)
+    setView('tools')
+  }
+
   return (
     <>
-      {!hasEntered && <EntryOverlay onEnter={(lang) => { setLanguage(lang); setHasEntered(true) }} />}
+      {!hasEntered && <EntryOverlay onEnter={enterApp} />}
       <Navbar setView={setView} />
       {renderView()}
       {view !== 'chatbot' && (
