@@ -29,7 +29,7 @@ import { getCurrentUser, clearAuthSession } from './services/api'
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState(false)
-  const [view, setView] = useState('home')
+  const [view, setView] = useState('tools')
   const [language, setLanguage] = useState(localStorage.getItem('earth_language') || 'en')
   const [pendingOcrFile, setPendingOcrFile] = useState(null)
   const [user, setUser] = useState(() => getCurrentUser())
